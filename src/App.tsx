@@ -8,10 +8,10 @@ import {
 import SignUpPage from "./pages/sign-up-page";
 import LoginPage from "./pages/login-page";
 import Userinfo from "./pages/userinfo";
-import Desktop4 from "./pages/desktop4";
-import Desktop3 from "./pages/desktop3";
-import Desktop2 from "./pages/desktop2";
-import Desktop1 from "./pages/desktop1";
+import Desktop4 from "./pages/About-page";
+import Desktop3 from "./pages/productView-page";
+import Desktop2 from "./pages/cart-page";
+import Desktop1 from "./pages/home";
 import { useEffect } from "react";
 
 import React from "react";
@@ -99,13 +99,13 @@ function App() {
       <Route path="/" element={<SignUpPage />} />
       <Route path="/login-page" element={<LoginPage />} />
       <Route path="/userinfo" element={<Userinfo />} />
-      <Route path="/desktop-4" element={<Desktop4 />} />
+      <Route path="/about" element={<Desktop4 />} />
       <Route
-          path="/desktop-3/:productId"
+          path="/product/:productId"
           element={<Desktop3 />} // No need to pass productId here
         />
       <Route path="/cart" element={<Desktop2 />} />
-      <Route path="/desktop-1" element={<Desktop1 />} />
+      <Route path="/home" element={<Desktop1 />} />
     </Routes>
     
   );

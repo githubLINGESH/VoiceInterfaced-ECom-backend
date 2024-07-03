@@ -28,7 +28,7 @@
         <div className="grid sm:col-span-1 items-center m-4">
         <div className="relative w-64 h-80">
             <div className="absolute inset-0 bg-whitesmoke-100 rounded-md" />
-            <div className="absolute  cursor-pointer top-[0px] left-[0px] bg-white shadow-[1px_1px_2px_rgba(0,_0,_0,_0.25)_inset] w-full h-[70%]">
+            <div className="absolute cursor-pointer top-[0px] left-[0px] bg-white shadow-[1px_1px_2px_rgba(0,_0,_0,_0.25)_inset] w-full h-[70%]">
             <img
                 className="absolute object-cover top-[25%] h-[60%] left-[25%] z-10"
                 src={product.imageSrc}

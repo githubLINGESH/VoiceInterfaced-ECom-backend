@@ -5,7 +5,8 @@
                 const navigate = useNavigate();
         
                 const handleProductClick = () => {
-                navigate(`/desktop-3/${product.id}`); // Redirect to /desktop-3 with the product ID
+                        navigate(`/product/${product.id}`, { state: { product } });
+                        console.log("In tem", product); // Redirect to /desktop-3 with the product ID and product details
                 };
 
         return(
