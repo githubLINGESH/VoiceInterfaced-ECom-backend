@@ -23,7 +23,7 @@
     return (
         <div>
         <img
-            className="absolute top-[45px] left-[1122px] w-[54.74px] h-[58.01px] overflow-hidden"
+            className="overflow-hidden"
             src={copyIcon}
             alt=""
             onClick={() => copy(text)}

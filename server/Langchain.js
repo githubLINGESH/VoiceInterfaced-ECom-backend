@@ -1,91 +1,74 @@
 const { MongoClient } = require('mongodb');
 const { GoogleGenerativeAIEmbeddings } = require("@langchain/google-genai");
-const { MongoDBAtlasVectorSearch } = require("@langchain/mongodb");
 const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
 const { loadQAChain } = require("langchain/chains");
 
-
-// Initialize MongoDB client
 const mongoClient = new MongoClient('mongodb+srv://dealOn1800:IDg7CCKEUitybSE6@cluster0.a08ehca.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 
-Api_key = "AIzaSyCSTNxkfVcHOS_XtBqydmeEC7I14Hsl94k"
+const Api_key = "AIzaSyCSTNxkfVcHOS_XtBqydmeEC7I14Hsl94k"
 
 async function main() {
     try {
-        // Connect to MongoDB
         await mongoClient.connect();
         const db = mongoClient.db('Ecom');
-        const collection = db.collection('products');
+        const vectorizedCollection = db.collection('vectorized_products');
 
+        // Simulated user context and chat history (replace with actual data in production)
+        const userContext = {
+            name: "John",
+            previousPurchases: ["Kitchen Blender", "Coffee Maker"],
+            preferredCategories: ["Kitchen Appliances", "Home Decor"],
+            loyaltyStatus: "Gold Member"
+        };
 
-        const documentCount = await collection.countDocuments();
-        console.log(`Number of documents in collection: ${documentCount}`);
+        const chatHistory = [
+            { role: "user", content: "I'm looking for a high-quality mixer grinder." },
+            { role: "assistant", content: "Certainly! I'd be happy to help you find a high-quality mixer grinder. Could you tell me more about what features are important to you?" },
+            { role: "user", content: "I need something powerful and durable for daily use." }
+        ];
 
+        const userCart = [
+            { name: "Stainless Steel Cookware Set", price: 129.99 },
+            { name: "Digital Kitchen Scale", price: 24.99 }
+        ];
 
-        // Create embeddings
-        const embeddings = new GoogleGenerativeAIEmbeddings({
-        modelName: "embedding-001",
-        apiKey: Api_key,
-        });
+        const userPrompt = "Premium Mixer grinder";
+        console.log("Searching for:", userPrompt);
 
-        // prepare the documents for vector store
-        const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
-            collection,
-            indexName: "default",
-            textKey: "combinedText",
-            embeddingKey: "embedding",
-        });
-        
-        console.log("Vector store created successfully");
-        
-        // Create combined text field if it doesn't exist
-        const updateResult = await collection.updateMany(
-            { combinedText: { $exists: false } },
-            [
-                {
-                    $set: {
-                        combinedText: {
-                            $concat: [
-                                "$name", " ",
-                                "$description", " ",
-                                "$category", " ",
-                                { $reduce: { input: "$tags", initialValue: "", in: { $concat: ["$$value", " "] } } }, " ",
-                                "$specifications.material", " ",
-                                "$specifications.dimensions", " ",
-                                "$specifications.weight", " ",
-                                "$specifications.color", " ",
-                                "$specifications.brand", " ",
-                                "$availability", " ",
-                                { $reduce: { input: "$deliveryOptions", initialValue: "", in: { $concat: ["$$value", " "] } } }, " ",
-                                "$returnPolicy"
-                            ]
-                        }
+        // Use raw MongoDB query
+        const pipeline = [
+            {
+                $search: {
+                    index: "default",
+                    text: {
+                        query: userPrompt,
+                        path: "combinedText"
                     }
                 }
-            ]
-        );
-
-        console.log(`Updated ${updateResult.modifiedCount} documents with combined text field`);
-
-        // Create embeddings for the combinedText field
-        const documents = await collection.find({ combinedText: { $exists: true } }).toArray();
-        for (const doc of documents) {
-            if (doc.combinedText){
-                try{
-                    const embedding = await embeddings.embedDocuments([doc.combinedText]);
-                    console.log("THe combined text:",doc.combinedText,",Embedding:",embedding) // Ensure this matches the method in your library
-                    await collection.updateOne({ _id: doc._id }, { $set: { embedding: embedding[0] } }); // Assuming embed returns an array
-                }
-                catch(error){
-                    console.log("Error",error);
+            },
+            {
+                $limit: 3
+            },
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    description: 1,
+                    price: 1,
+                    category: 1,
+                    tags: 1,
+                    specifications: 1,
+                    score: { $meta: "searchScore" }
                 }
             }
-            else {
-                console.warn(`Document ID ${doc._id} has an invalid combinedText field.`);
-            }
+        ];
+        const searchResults = await vectorizedCollection.aggregate(pipeline).toArray();
+        console.log("Search Results:", JSON.stringify(searchResults, null, 2));
+
+        if (searchResults.length === 0) {
+            console.log("No results found. Please check your data and index.");
+            return;
         }
-
-        console.log("Embeddings created and stored successfully");
 
         // Create Gemini model
         const model = new ChatGoogleGenerativeAI({
@@ -96,36 +79,54 @@ async function main() {
 
         // Create loadQAChain
         const chain = loadQAChain(model, { type: "stuff" });
-    
-        // User prompt
-        const userPrompt = "Premium Mixer grinder";
-
-        console.log("Performing similarity search for:", userPrompt);
-        const docs = await vectorStore.similaritySearch(userPrompt, 3);
-        console.log("Retrieved documents:", JSON.stringify(docs, null, 2));
-
-        if (docs.length === 0) {
-            console.log("No similar documents found.");
-            return;
-        }
 
         // Format the retrieved documents
-        const formattedDocs = docs.map(doc => {
-            return `Product: ${doc.metadata.name} Description: ${doc.metadata.description} Price: $${doc.metadata.price} Category: ${doc.metadata.category} Tags: ${doc.metadata.tags.join(', ')} `;
+        const formattedDocs = searchResults.map(doc => {
+            return `Product: ${doc.name}
+Description: ${doc.description}
+Price: $${doc.price}
+Category: ${doc.category}
+Tags: ${doc.tags.join(', ')}
+Specifications: ${JSON.stringify(doc.specifications)}`;
         });
-                
-        // Construct a prompt that includes the formatted document information
-        const enhancedPrompt = `
-                Based on the following product information:
-                ${formattedDocs.join('\n')}
-                ${userPrompt}. Can you recommend a product and explain why it might be suitable?`;
-                
-        const response = await chain._call({
-                        input_documents: docs,
-                        question: enhancedPrompt,
-            });
 
-        console.log("Response:", response.text);
+        // Construct a prompt for the LLM
+        const enhancedPrompt = `
+You are an AI assistant for an e-commerce website, acting as a friendly and knowledgeable sales representative. Your name is Alex. You're helping a customer named ${userContext.name}, who is a ${userContext.loyaltyStatus}. Based on the following information:
+
+Product Information:
+${formattedDocs.join('\n\n')}
+
+User Context:
+- Previous Purchases: ${userContext.previousPurchases.join(', ')}
+- Preferred Categories: ${userContext.preferredCategories.join(', ')}
+
+Chat History:
+${chatHistory.map(msg => `${msg.role.toUpperCase()}: ${msg.content}`).join('\n')}
+
+User's Current Cart:
+${userCart.map(item => `- ${item.name} ($${item.price})`).join('\n')}
+
+The customer is interested in: "${userPrompt}". 
+
+Please provide a friendly and personalized response that:
+1. Addresses the customer by name and acknowledges their loyalty status
+2. References their chat history and shows understanding of their needs
+3. Recommends the most suitable product(s) from the list above, explaining why it fits their requirements
+4. Highlights key features and benefits, relating them to the customer's preferences and previous purchases
+5. Suggests any relevant accessories or complementary products, possibly referencing items in their cart
+6. Provides a brief comparison if there are multiple suitable options
+7. Includes a warm and encouraging call-to-action, inviting the customer to make a purchase or ask for more information
+8. Maintains a conversational, helpful tone throughout, as if you're a real salesperson chatting with a valued customer
+
+Your response should be informative, engaging, and tailored to this specific customer's context and needs.`;
+
+        const response = await chain.call({
+            input_documents: searchResults,
+            question: enhancedPrompt,
+        });
+
+        console.log("AI Response:", response.text);
     } catch (error) {
         console.error("Error:", error);
     } finally {

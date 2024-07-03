@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
 
 const UserContextSchema = new mongoose.Schema({
-    userId: String,
-    lastPurchase: String,
-    preferences: [String],
-    // Other relevant fields
+    name: { type: String, required: true },
+    loyaltyStatus: { type: String, required: true },
+    previousPurchases: [{ type: String }],
+    preferredCategories: [{ type: String }],
+    currentCart: [{
+        name: { type: String, required: true },
+        price: { type: Number, required: true }
+    }]
 });
 
-const userCon = mongoose.model("UserConText",UserContextSchema);
+const UserContext = mongoose.model("UserContext", UserContextSchema);
 
-module.exports = userCon;
+module.exports = UserContext;
