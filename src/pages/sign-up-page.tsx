@@ -1,9 +1,11 @@
+import React from 'react';
 import { FunctionComponent ,useState, useEffect} from "react";
 import Navbar from "../components/navbar";
 import SideNavbar from "../components/sidenavbar";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage: FunctionComponent = () => {
-
+  const navigate = useNavigate()
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [selectedOption,setSelectedOption] = useState<string | null>(null);
   const [isVoiceOption, setIsVoiceOption] = useState(false);
@@ -46,6 +48,7 @@ const SignUpPage: FunctionComponent = () => {
           if (response.ok) {
             // Registration successful, handle accordingly
             alert("Registration successful!");
+            navigate('login-page');
           } else {
             // Registration failed, handle accordingly
             alert("Registration failed. Please try again.");

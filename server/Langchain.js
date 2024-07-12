@@ -1,5 +1,4 @@
 const { MongoClient } = require('mongodb');
-const { GoogleGenerativeAIEmbeddings } = require("@langchain/google-genai");
 const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
 const { loadQAChain } = require("langchain/chains");
 
@@ -107,7 +106,7 @@ ${chatHistory.map(msg => `${msg.role.toUpperCase()}: ${msg.content}`).join('\n')
 User's Current Cart:
 ${userCart.map(item => `- ${item.name} ($${item.price})`).join('\n')}
 
-The customer is interested in: "${userPrompt}". 
+The customer is interested in: "${userPrompt}".
 
 Please provide a friendly and personalized response that:
 1. Addresses the customer by name and acknowledges their loyalty status
@@ -121,7 +120,7 @@ Please provide a friendly and personalized response that:
 
 Your response should be informative, engaging, and tailored to this specific customer's context and needs.`;
 
-        const response = await chain.call({
+        const response = await chain._call({
             input_documents: searchResults,
             question: enhancedPrompt,
         });
