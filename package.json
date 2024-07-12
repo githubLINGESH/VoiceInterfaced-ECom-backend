@@ -30,12 +30,11 @@
     "postcss": "^8.4.16",
     "tailwindcss": "^3.3.3"
   },
-  "scripts": {
-    "start": "react-scripts start",
+    "scripts": {
+    "start": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "serve": "serve -s build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "root": true
