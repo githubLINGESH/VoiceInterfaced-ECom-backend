@@ -6,8 +6,11 @@ const userRoutes = require('./routes/userRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const prodRoutes = require('./routes/productRoutes');
 const LLmRoutes = require('./routes/llmRoutes');
+const UserContextRoutes = require('./routes/userContextRoutes');
+const chatHistoryRoutes = require('./routes/chatHistoryRoutes');
 const cors = require('cors');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const path = require('path');
 
 const port = process.env.PORT || 3001;
 
@@ -37,6 +40,13 @@ app.use(cors({
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// // Serve static files from the React app
+// app.use(express.static(path.join(__dirname,'../public')));
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname,'../public', 'index.html'));
+// });
 
 // Set up Express sessions
 app.use(session({
@@ -73,5 +83,7 @@ app.use('/user', userRoutes);
 app.use('/cart', cartRoutes);
 app.use('/prod', prodRoutes);
 app.use('/llm', LLmRoutes);
+app.use('/UContext',UserContextRoutes);
+app.use('/messageHistory', chatHistoryRoutes);
 
 
