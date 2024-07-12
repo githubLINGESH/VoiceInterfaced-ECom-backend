@@ -82,6 +82,7 @@ const VoiceInterface = ({ isVoice }) => {
         fetch('http://localhost:3001/llm/prompted-res', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials : "include",
             body: JSON.stringify({ userInput: transcript , language : language})
         })
         .then(response => response.json())

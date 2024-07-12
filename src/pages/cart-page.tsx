@@ -1,3 +1,4 @@
+import React from 'react';
 import { FunctionComponent, useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import { useParams } from "react-router-dom";
@@ -30,6 +31,7 @@ const Cart: FunctionComponent<Cart2Props> = () => {
   useEffect(() => {
     const getCartProducts = async () => {
       try {
+        // use hosted api during production - https://voiceinterfaced-ecom-backend.onrender.com/cart/getcart-products
         const response = await fetch(`http://localhost:3001/cart/getcart-products`,{
           method:"GET",
           credentials:"include"

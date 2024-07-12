@@ -1,3 +1,4 @@
+import React from 'react';
 import { FunctionComponent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ProductTemplate from "../components/ProductTemplate";

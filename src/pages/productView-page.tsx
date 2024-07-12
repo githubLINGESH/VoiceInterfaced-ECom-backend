@@ -1,3 +1,4 @@
+import React from 'react';
 import { FunctionComponent, useState} from "react";
 import Navbar from "../components/navbar";
 import ProductTemplate from "../components/ProductTemplate";

@@ -1,3 +1,4 @@
+import React from 'react';
 import { FunctionComponent ,useEffect, useState} from "react";
 import Navbar from "../components/navbar";
 import SideNavbar from "../components/sidenavbar";
@@ -53,7 +54,7 @@ loginButton.addEventListener("click", () => {
           if (response.ok) {
             // Registration successful, handle accordingly
             alert("Login successful!");
-            navigate('/desktop-1');
+            navigate('/home');
           } else {
             // Registration failed, handle accordingly
             alert("Login failed. Please try again.");
