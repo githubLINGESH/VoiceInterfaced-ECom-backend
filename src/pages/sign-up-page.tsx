@@ -9,11 +9,11 @@ const SignUpPage: FunctionComponent = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [selectedOption,setSelectedOption] = useState<string | null>(null);
   const [isVoiceOption, setIsVoiceOption] = useState(false);
+
   // Add a useEffect hook to run code after component rendering
   useEffect(() => {
     // Select the signup button by its id
     const signupButton = document.getElementById("signupButton") as HTMLButtonElement;
-
     // Add an event listener to the button
     signupButton.addEventListener("click", () => {
       // Prevent multiple clicks by disabling the button
@@ -37,7 +37,7 @@ const SignUpPage: FunctionComponent = () => {
       };
 
       // Make a POST request to your server to register the user
-      fetch("http://localhost:3001/user/register", {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

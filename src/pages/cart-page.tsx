@@ -32,7 +32,7 @@ const Cart: FunctionComponent<Cart2Props> = () => {
     const getCartProducts = async () => {
       try {
         // use hosted api during production - https://voiceinterfaced-ecom-backend.onrender.com/cart/getcart-products
-        const response = await fetch(`http://localhost:3001/cart/getcart-products`,{
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/cart/getcart-products`,{
           method:"GET",
           credentials:"include"
         });

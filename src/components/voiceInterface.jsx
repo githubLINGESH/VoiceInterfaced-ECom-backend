@@ -79,7 +79,7 @@ const VoiceInterface = ({ isVoice }) => {
     };
 
     const processUserInput = (transcript) => {
-        fetch('http://localhost:3001/llm/prompted-res', {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/llm/prompted-res`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials : "include",

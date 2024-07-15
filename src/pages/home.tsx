@@ -31,7 +31,7 @@ const Home: FunctionComponent = () => {
   const [OpenVoice, SetVoiceInterfaceOpen] = useState(false);
 
   const getCred = async() => {
-    fetch('http://localhost:3001/auth-check',
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/auth-check`,
       {
         method:"GET",
         credentials: 'include',
@@ -49,7 +49,7 @@ const Home: FunctionComponent = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:3001/prod/products");
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/prod/products`);
         console.log("fetched");
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -87,7 +87,7 @@ const Home: FunctionComponent = () => {
   const handleAddToCartClick = (product : Product) => {
     setSelectedProduct(product);
     getCred();
-    fetch('http://localhost:3001/cart/add-to-cart',{
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/cart/add-to-cart`,{
       method: "POST",
       headers:{
         "Content-type" : "application/json"

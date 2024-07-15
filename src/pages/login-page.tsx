@@ -42,7 +42,7 @@ loginButton.addEventListener("click", () => {
       };
 
       // Make a POST request to your server to register the user
-      fetch("http://localhost:3001/user/login", {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/user/login`, {
         method: "POST",
         credentials: 'include',
         headers: {
