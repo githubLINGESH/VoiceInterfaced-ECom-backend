@@ -1,12 +1,14 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
+import { useState } from 'react';
 
 interface NavbarProps {
     toggleSidebar: () => void;
     handleVoiceOption : () => void;
+    handleProfileClick : () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption }) => {
+const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption, handleProfileClick }) => {
     const navigate = useNavigate();
 
     function handleHelpClick() {
@@ -85,7 +87,8 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption }) => 
 
             <div className="ml-auto flex items-center justify-end">
                 {/* Full profile info for medium and larger screens */}
-                <div className="hidden md:flex items-center px-2 rounded-full bg-white">
+                <div className="hidden md:flex items-center px-2 rounded-full bg-white cursor-pointer"
+                    onClick={handleProfileClick}>
                     <h2 className="text-center text-darkslategray-100">user</h2>
                     <img
                         className="w-7 ml-2"
@@ -94,7 +97,8 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption }) => 
                     />
                 </div>
                 {/* Smaller icon-only profile for small screens */}
-                <div className="flex md:hidden items-center px-2 py-2 rounded-full bg-white">
+                <div className="flex md:hidden items-center px-2 py-2 rounded-full bg-white cursor-pointer"
+                onClick={handleProfileClick}>
                     <img
                         className="w-7"
                         alt="profile icon"

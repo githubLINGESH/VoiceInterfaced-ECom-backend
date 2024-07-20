@@ -7,7 +7,9 @@ import ProdTem from "../components/productTem";
 import SideNavbar from "../components/sidenavbar";
 import Slider from "../components/slider/slider";
 import VoiceInterface from "../components/voiceInterface/voiceInterface";
+import Userinfo from "components/userinfo";
 import Products from "../productData";
+import React from "react";
 
 
 type Product = {
@@ -23,11 +25,15 @@ type Product = {
 };
 
 const Home: FunctionComponent = () => {
-
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [userId, setUserId] = useState<any>();
   const [OpenVoice, SetVoiceInterfaceOpen] = useState(false);
+  const [IsClicked, setIsClicked] = useState(false);
+  const [SelectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string>('');
+
 
   const getCred = async() => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/auth-check`,
@@ -68,22 +74,21 @@ const Home: FunctionComponent = () => {
   }, []);
 
   
-  const navigate = useNavigate();
-  const [SelectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  //handling product selection for product view
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     navigate(`/product/${product.id}`,{state:{product}});
   };
 
-  const [selectedOption, setSelectedOption] = useState<string>('');
+  // Handling product selection in side navbar
 
   const handleSelectOption = (option: string | null) => {
     setSelectedOption(option as any);
     setIsSidebarVisible(false);
   };
 
-
+  // handling add to cart click
   const handleAddToCartClick = (product : Product) => {
     setSelectedProduct(product);
     getCred();
@@ -103,21 +108,29 @@ const Home: FunctionComponent = () => {
     navigate("/cart/");
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarVisible(!isSidebarVisible);
-  };
-
+  //voice interface handling
   const handleVoiceOption = () => {
     SetVoiceInterfaceOpen(!OpenVoice);
   }
+
+  //side Navbar handling
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
 
   const closeSidebar = () => {
     setIsSidebarVisible(false);
   };
 
+  //handling profile click
+
+  const handleProfileClick = () =>{
+      setIsClicked(!IsClicked);
+  };
+
   return (
     <div className="bg-white w-full text-left text-base text-darkslategray-100 font-sora">
-      <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption}/>
+      <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick}/>
       {isSidebarVisible && ( // if true visible
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
@@ -127,6 +140,7 @@ const Home: FunctionComponent = () => {
       <div className="relative">
           {/* If isVisible true only Side navbar visible*/}
           <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
+          {IsClicked && <Userinfo onClose={handleProfileClick}/>}
           <div className="py-10" style={{ overflow: 'hidden', width: '100%', height: '700px' }}>
             <div className="slider-inner-container">
               <div className="slider-container">

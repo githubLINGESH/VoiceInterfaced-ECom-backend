@@ -1,8 +1,10 @@
+import React from "react";
 import { FunctionComponent, useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import ProdTem from "../components/productTem";
 import SideNavbar from "../components/sidenavbar";
 import VoiceInterface from "../components/voiceInterface/voiceInterface";
+import Userinfo from "components/userinfo";
 
 
 type Product = {
@@ -23,8 +25,9 @@ const Cart: FunctionComponent<Cart2Props> = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [selectedOption,setSelectedOption] = useState<string | null>(null);
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
-  const [userId, setUSerId] = useState<any>();
   const [OpenVoice, SetVoiceInterfaceOpen] = useState(false);
+  const [IsClicked, setIsClicked] = useState(false);
+
 
   useEffect(() => {
     const getCartProducts = async () => {
@@ -71,10 +74,16 @@ const Cart: FunctionComponent<Cart2Props> = () => {
     SetVoiceInterfaceOpen(!OpenVoice);
   }
 
+    //handling profile click
+  
+    const handleProfileClick = () =>{
+        setIsClicked(!IsClicked);
+    }
+
     // Assuming you have an array of products, you can filter the product with the matching ID
   return (
     <div className="relative bg-white w-full h-[1024px] text-left text-base text-darkslategray-100 font-sora">
-        <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption}/>
+        <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick}/>
         {/* form div */}
         {isSidebarVisible && (
         <div
@@ -83,6 +92,7 @@ const Cart: FunctionComponent<Cart2Props> = () => {
         />
       )}
       <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
+      {IsClicked&&<Userinfo onClose={handleProfileClick}/>}
       <VoiceInterface isVoice={OpenVoice} />
       <b className="mt-20 px-4 inline-block text-[35px] text-black">
         Shopping cart

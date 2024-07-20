@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import SignUpPage from "./pages/sign-up-page";
 import LoginPage from "./pages/login-page";
-import Userinfo from "./pages/userinfo";
 import Desktop4 from "./pages/About-page";
 import Desktop3 from "./pages/productView-page";
 import Desktop2 from "./pages/cart-page";
@@ -58,23 +57,19 @@ function App() {
         title = "";
         metaDescription = "";
         break;
-      case "/userinfo":
+      case "/about":
         title = "";
         metaDescription = "";
         break;
-      case "/desktop-4":
+      case "/product":
         title = "";
         metaDescription = "";
         break;
-      case "/desktop-3":
+      case "/cart":
         title = "";
         metaDescription = "";
         break;
-      case "/desktop-2":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/desktop-1":
+      case "/home":
         title = "";
         metaDescription = "";
         break;
@@ -98,7 +93,6 @@ function App() {
     <Routes>
       <Route path="/" element={<SignUpPage />} />
       <Route path="/login-page" element={<LoginPage />} />
-      <Route path="/userinfo" element={<Userinfo />} />
       <Route path="/about" element={<Desktop4 />} />
       <Route
           path="/product/:productId"
