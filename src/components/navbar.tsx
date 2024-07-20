@@ -32,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption }) => 
                 <img
                     className="w-full h-auto"
                     alt="plugin icon"
-                    src="/plugin-icon--1-1-1_2x-removebg-preview.png"
+                    src="/plugin-icon--1-1-1@2x.png"
                 />
             </div>
 
