@@ -4,10 +4,10 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        'sm': '340px', // Small screens
-        'md': '798px', // Medium screens
+        'sm': '640px', // Small screens
+        'md': '768px', // Medium screens
         'lg': '1024px', // Large screens
-        'xl': '1360px',
+        'xl': '1280px',
       },
       colors: {
         white: "#fff",

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faClose} from '@fortawesome/free-solid-svg-icons';
     interface SideNavbarProps {
         onSelect: (option: string | null) => void;
         isVisible: boolean;
@@ -22,9 +23,10 @@ const SideNavbar: React.FC<SideNavbarProps> = ({ onSelect, isVisible }) => {
         <div className="fixed inset-y-0 left-0 bg-whitesmoke-100 z-50" style={{width:"305px"}}>
         <button
             className="cursor-pointer absolute top-4 right-4 text-darkslategray-100"
-            onClick={onSelect.bind(null, null)}
+            onClick={() => onSelect(null)} // sending to other pages with the null value so that the component
+            // can be rendered
         >
-            X
+            <FontAwesomeIcon icon={faClose}></FontAwesomeIcon>
         </button>
         <div className='py-8 text-lg'>
             <ul className="list-none p-0 m-0">

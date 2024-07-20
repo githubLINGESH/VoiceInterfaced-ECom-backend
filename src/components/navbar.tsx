@@ -21,11 +21,11 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption }) => 
     return (
         <div className="flex flex-wrap items-center w-full bg-darkslategray-100 h-20 font-inter text-white text-sm fixed z-50">
             <div className="ml-4">
-                    <img
-                        className='w-10 h-10'
-                        src="/icon.png"
-                        onClick={toggleSidebar}>
-                    </img>
+                <img
+                    className='w-10 h-10'
+                    src="/icon.png"
+                    onClick={toggleSidebar}>
+                </img>
             </div>
 
             <div className="flex items-center justify-center w-1/4 sm:w-1/12 md:w-1/12 px-4">
@@ -75,27 +75,17 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption }) => 
                 </div>
             </div>
 
-            <div className="flex items-center justify-center w-1/4 sm:w-1/12 md:w-1/12">
-                <div className="cursor-pointer flex flex-col items-center" onClick={handleCartClick}>
-                    <img
-                        className="w-7 h-7"
-                        alt="telegram icon"
-                        src="/vector4.svg"
-                    />
-                    <span className="hidden md:inline">TELEGRAM</span>
-                </div>
-            </div>
-
-            <div className="ml-4">
-                    <button
-                        className='bg-darkslategray-100 cursor-pointer'
-                        onClick={handleVoiceOption}>
-                            🔉
-                    </button>
+            <div className="">
+                <button
+                    className='bg-darkslategray-100 cursor-pointer'
+                    onClick={handleVoiceOption}>
+                        🔉
+                </button>
             </div>
 
             <div className="ml-auto flex items-center justify-end">
-                <div className="cursor-pointer flex items-center px-4 rounded-full bg-white">
+                {/* Full profile info for medium and larger screens */}
+                <div className="hidden md:flex items-center px-2 rounded-full bg-white">
                     <h2 className="text-center text-darkslategray-100">user</h2>
                     <img
                         className="w-7 ml-2"
@@ -103,8 +93,18 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption }) => 
                         src="/vector3.svg"
                     />
                 </div>
+                {/* Smaller icon-only profile for small screens */}
+                <div className="flex md:hidden items-center px-2 py-2 rounded-full bg-white">
+                    <img
+                        className="w-7"
+                        alt="profile icon"
+                        src="/vector3.svg"
+                    />
+                </div>
             </div>
         </div>
+
+
     );
 };
 

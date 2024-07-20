@@ -80,6 +80,7 @@ const Home: FunctionComponent = () => {
 
   const handleSelectOption = (option: string | null) => {
     setSelectedOption(option as any);
+    setIsSidebarVisible(false);
   };
 
 
@@ -117,13 +118,14 @@ const Home: FunctionComponent = () => {
   return (
     <div className="bg-white w-full text-left text-base text-darkslategray-100 font-sora">
       <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption}/>
-      {isSidebarVisible && (
+      {isSidebarVisible && ( // if true visible
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
           onClick={closeSidebar}
         />
       )}
       <div className="relative">
+          {/* If isVisible true only Side navbar visible*/}
           <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
           <div className="py-10" style={{ overflow: 'hidden', width: '100%', height: '700px' }}>
             <div className="slider-inner-container">
