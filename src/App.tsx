@@ -111,3 +111,6 @@ function App() {
   );
 }
 export default App;
+
+
+//for production - "start": "serve -s build",

@@ -1,4 +1,3 @@
-import React from 'react';
 import { FunctionComponent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ProductTemplate from "../components/ProductTemplate";
@@ -6,8 +5,8 @@ import Navbar from "../components/navbar";
 import ProductCard from "../components/prodCard";
 import ProdTem from "../components/productTem";
 import SideNavbar from "../components/sidenavbar";
-import Slider from "../components/slider";
-import VoiceInterface from "../components/voiceInterface";
+import Slider from "../components/slider/slider";
+import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Products from "../productData";
 
 

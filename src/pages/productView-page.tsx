@@ -1,11 +1,10 @@
-import React from 'react';
-import { FunctionComponent, useState} from "react";
+import { FunctionComponent, useState } from "react";
+import { useLocation } from 'react-router-dom';
 import Navbar from "../components/navbar";
 import ProductTemplate from "../components/ProductTemplate";
-import { useLocation } from 'react-router-dom';
-import '../ProductTemplate.css'
 import SideNavbar from "../components/sidenavbar";
-import VoiceInterface from "../components/voiceInterface";
+import VoiceInterface from "../components/voiceInterface/voiceInterface";
+import '../ProductTemplate.css';
 
 
 type ProductView3Props = {};

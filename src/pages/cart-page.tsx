@@ -1,10 +1,8 @@
-import React from 'react';
-import { FunctionComponent, useState, useEffect } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import Navbar from "../components/navbar";
-import { useParams } from "react-router-dom";
 import ProdTem from "../components/productTem";
 import SideNavbar from "../components/sidenavbar";
-import VoiceInterface from "../components/voiceInterface";
+import VoiceInterface from "../components/voiceInterface/voiceInterface";
 
 
 type Product = {

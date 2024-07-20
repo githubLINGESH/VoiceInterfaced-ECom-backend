@@ -1,14 +1,9 @@
 import React from 'react';
 import { FunctionComponent ,useState, useEffect} from "react";
-import Navbar from "../components/navbar";
-import SideNavbar from "../components/sidenavbar";
 import { useNavigate } from "react-router-dom";
 
 const SignUpPage: FunctionComponent = () => {
   const navigate = useNavigate()
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-  const [selectedOption,setSelectedOption] = useState<string | null>(null);
-  const [isVoiceOption, setIsVoiceOption] = useState(false);
 
   // Add a useEffect hook to run code after component rendering
   useEffect(() => {
@@ -66,50 +61,33 @@ const SignUpPage: FunctionComponent = () => {
     });
   }, []);
 
-  const handleSelectOption = (selectedOption: string | null) => {
-    setSelectedOption(selectedOption);
-  };
-
-  const toggleSidebar = () => {
-    setIsSidebarVisible(!isSidebarVisible);
-};
-
-  const handleVoiceOption = () => {
-    setIsVoiceOption(!isVoiceOption);
-  }
 
 
   return (
-    <div className="bg-gray-100 w-full h-full overflow-hidden text-left">
-      <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption}/>
-        {/* form div */}
-        {isSidebarVisible && (
-          <div className="grid col-span-1 bg-whitesmoke-100">
-            <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
-          </div>
-        )}
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="w-2/4 h-3/4 bg-popup bg-gray-100 flex shadow-lg rounded-3xl">
-            <div className="grid grid-cols-1 gap-4 m-4 p-4">
-              <div className="col-span-1">
-                <b className="text-21xl inline-block text-black w-[181px] h-[49px]">
-                  SIGNUP
-                </b>
+      <div className="flex flex-col md:flex-row bg-gray-100 w-full h-full overflow-hidden xt-left">
+        <div className="hidden lg:flex flex flex-col justify-center items-center w-full md:w-1/4 bg-darkslategray-100">
+          <img src="plugin-icon--1-1-1_2x-removebg-preview.png"></img>
+        </div>
+        <div className="md:w-7/12 w-full flex items-center justify-center py-6 min-h-screen">
+          <div className="w-full md:w-3/4 bg-gray-100 flex shadow-lg rounded-3xl">
+            <div className="grid grid-cols-1 gap-4 p-4 w-full">
+              <div className="col-span-1 text-center">
+                <b className="text-5xl inline-block text-black font-sora">SIGNUP AN ACCOUNT</b>
               </div>
-
+  
               <div className="col-span-1 px-6 py-4 relative">
                 <input
-                  className="ml-6 rounded-sm bg-white backdrop-filter-blur-md box-border w-full h-[70px] border-[1px] border-solid border-silver text-9xl text-darkslategray-100 font-sora pl-12"
+                  className="rounded-sm bg-white w-full h-16 border border-solid border-silver text-lg text-darkslategray-100 font-sora pl-4"
                   type="email"
                   id="email"
                   name="email"
                   placeholder="Enter your Email"
                 />
               </div>
-
+  
               <div className="col-span-1 px-6 py-4 relative">
                 <input
-                  className="ml-6 rounded-sm bg-white backdrop-filter-blur-md box-border w-full h-[70px] border-[1px] border-solid border-silver text-9xl text-darkslategray-100 font-sora pl-12"
+                  className="rounded-sm bg-white w-full h-16 border border-solid border-silver text-lg text-darkslategray-100 font-sora pl-4"
                   type="password"
                   id="pass"
                   name="pass"
@@ -121,10 +99,10 @@ const SignUpPage: FunctionComponent = () => {
                   src="/vector5.svg"
                 />
               </div>
-
+  
               <div className="col-span-1 px-6 py-4 relative">
                 <input
-                  className="ml-6 rounded-sm bg-white backdrop-filter-blur-md box-border w-full h-[70px] border-[1px] border-solid border-silver text-9xl text-darkslategray-100 font-sora pl-12"
+                  className="rounded-sm bg-white w-full h-16 border border-solid border-silver text-lg text-darkslategray-100 font-sora pl-4"
                   type="password"
                   id="confirm-pass"
                   name="confirm-pass"
@@ -136,34 +114,35 @@ const SignUpPage: FunctionComponent = () => {
                   src="/vector5.svg"
                 />
               </div>
-
+  
               <div className="col-span-1 px-6 py-4 relative">
                 <input
-                  className="ml-6 rounded-sm bg-white backdrop-filter-blur-md box-border w-full h-[70px] border-[1px] border-solid border-silver text-9xl text-darkslategray-100 font-sora pl-12"
+                  className="rounded-sm bg-white w-full h-16 border border-solid border-silver text-lg text-darkslategray-100 font-sora pl-4"
                   type="text"
                   id="name"
                   name="name"
                   placeholder="Enter your Name"
                 />
               </div>
-
-              <div className="col-span-1 px-6 py-4">
+  
+              <div className="col-span-1 px-6 py-4 text-center">
                 <button
-                  className="ml-6 rounded-11xl bg-darkslategray-100 w-[181px] h-[73px]"
+                  className="rounded-2xl bg-darkslategray-100 h-16 w-full"
                   id="signupButton"
                   style={{
-                    textDecoration: "none",
-                    color: "inherit",
-                    cursor: "pointer",
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    cursor: 'pointer',
                   }}
                 >
-                  <div className="text-white text-11xl font-sora">
-                    Sign up
-                  </div>
+                  <div className="text-white text-xl font-sora">Sign up</div>
                 </button>
               </div>
             </div>
           </div>
+        </div>
+        <div className="md:w-5/12 w-full hidden md:flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: 'url("AIImage.jpg")' }}>
+          {/* You can optionally add any content or leave it empty for just the background image */}
         </div>
       </div>
 
