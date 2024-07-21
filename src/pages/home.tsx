@@ -103,9 +103,9 @@ const Home: FunctionComponent = () => {
     }).then((response) =>{
       if(response.ok){
         console.log("Added Successfully");
+        navigate("/cart/");
       }
     });
-    navigate("/cart/");
   };
 
   //voice interface handling
@@ -127,6 +127,8 @@ const Home: FunctionComponent = () => {
   const handleProfileClick = () =>{
       setIsClicked(!IsClicked);
   };
+
+  //passing the carted added 
 
   return (
     <div className="bg-white w-full text-left text-base text-darkslategray-100 font-sora">
@@ -189,8 +191,11 @@ const Home: FunctionComponent = () => {
           />
         ))}
       </div>
-
+      
       <VoiceInterface isVoice={OpenVoice} />
+      {OpenVoice &&<div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={handleVoiceOption}>
+      </div>}
 
       {SelectedProduct && (
         <ProductTemplate product={SelectedProduct} />

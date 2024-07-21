@@ -54,6 +54,9 @@ const ProductView: FunctionComponent<ProductView3Props> = () => {
       <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
       {IsClicked && <Userinfo onClose={handleProfileClick}/>}
       <VoiceInterface isVoice={isVoiceOpen}/>
+      {isVoiceOpen && <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={handleVoiceOption}>
+      </div>}
 
       <div className="m-4 py-20 flex items-center justify-center">
         <ProductTemplate product={product} />

@@ -94,6 +94,9 @@ const Cart: FunctionComponent<Cart2Props> = () => {
       <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
       {IsClicked&&<Userinfo onClose={handleProfileClick}/>}
       <VoiceInterface isVoice={OpenVoice} />
+      {OpenVoice &&<div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={handleVoiceOption}>
+      </div>}
       <b className="mt-20 px-4 inline-block text-[35px] text-black">
         Shopping cart
       </b>

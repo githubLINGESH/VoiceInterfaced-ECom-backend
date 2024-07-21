@@ -59,8 +59,8 @@ app.use(session({
     }),
     cookie: {
         maxAge: 1000 * 60 * 60, // 1 hour
-        secure: true, // Set to true if using HTTPS
-        sameSite: 'none' // Consider setting to 'strict' or 'none' based on your requirement
+        secure: process.env.NODE_ENV === 'production', // true if using HTTPS
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // Adjust based on your requirement
     }
 }));
 
