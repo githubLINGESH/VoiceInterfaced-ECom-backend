@@ -24,6 +24,7 @@ type Product = {
   link: string;
 };
 
+
 const Home: FunctionComponent = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
@@ -128,7 +129,7 @@ const Home: FunctionComponent = () => {
       setIsClicked(!IsClicked);
   };
 
-  //passing the carted added 
+  //passing the carted added
 
   return (
     <div className="bg-white w-full text-left text-base text-darkslategray-100 font-sora">

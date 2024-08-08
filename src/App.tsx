@@ -11,6 +11,8 @@ import Desktop4 from "./pages/About-page";
 import Desktop3 from "./pages/productView-page";
 import Desktop2 from "./pages/cart-page";
 import Desktop1 from "./pages/home";
+import AddProducts from "pages/AddProducts";
+import SearchPage from "pages/searchResults";
 import { useEffect } from "react";
 
 import React from "react";
@@ -100,6 +102,8 @@ function App() {
         />
       <Route path="/cart" element={<Desktop2 />} />
       <Route path="/home" element={<Desktop1 />} />
+      <Route path="/addProducts" element={<AddProducts/>}/>
+      <Route path="/search" element={<SearchPage/>} />
     </Routes>
     
   );

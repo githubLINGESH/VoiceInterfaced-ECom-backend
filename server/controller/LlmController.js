@@ -98,6 +98,8 @@ exports.PromptResponse = async (req, res) => {
         if (filteredResults.length === 0) {
             console.log("No high-score results found. Showing all retrieved results.");
         }
+
+        global.io.emit('searchResults', filteredResults);
         
         // Format the retrieved documents
         const formattedDocs = searchResults.map(doc => {
@@ -107,12 +109,12 @@ exports.PromptResponse = async (req, res) => {
                     Category: ${doc.category}
                     Tags: ${doc.tags.join(', ')}
                     Specifications: ${JSON.stringify(doc.specifications)}`;
-                            });
+        });
 
         // Construct a prompt for the LLM
         const enhancedPrompt = `
                 You are an AI assistant for an e-commerce website, acting as a friendly and knowledgeable sales representative. Your name is Alex. You're helping a customer named ${userContext.name}, who is a ${userContext.loyaltyStatus}. Based on the following information:
-
+                Most Importantly the responses should be short like conversational and sarcastic!
                 Product Information:
                 ${formattedDocs.join('\n\n')}
 

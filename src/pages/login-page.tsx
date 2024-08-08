@@ -112,6 +112,11 @@ const LoginPage: FunctionComponent = () => {
             >
               <div className="text-white text-xl font-sora">Login</div>
             </button>
+
+            <div className="px-2 py-4 text-black font-sora text-xl">
+                <p>Don't have an Account <a style={{color:"darkslategray"}}
+                className="px-2" href="/"> Sign Up</a></p>
+            </div>
           </div>
         </div>
       </div>

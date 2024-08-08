@@ -137,6 +137,11 @@ const SignUpPage: FunctionComponent = () => {
                 >
                   <div className="text-white text-xl font-sora">Sign up</div>
                 </button>
+
+                <div className="px-2 py-4 text-black font-sora text-xl">
+                  <p>Already have an Account? <a style={{color:"darkslategray"}}
+                  className="px-2" href="/login-page"> Login</a></p>
+                </div>
               </div>
             </div>
           </div>
@@ -145,7 +150,6 @@ const SignUpPage: FunctionComponent = () => {
           {/* You can optionally add any content or leave it empty for just the background image */}
         </div>
       </div>
-
   );
 };
 
