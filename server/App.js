@@ -1,4 +1,5 @@
 const express = require('express');
+const app = express();
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -11,10 +12,30 @@ const chatHistoryRoutes = require('./routes/chatHistoryRoutes');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+const http = require('http');
+const socketIo = require('socket.io');
+
+const server = http.createServer(app);
+
+    const io = socketIo(server, {
+        cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+        }
+    });
 
 const port = process.env.PORT || 3001;
 
-const app = express();
+// Socket.IO connection
+io.on('connection', (socket) => {
+    console.log('New client connected');
+    
+        socket.on('disconnect', () => {
+        console.log('Client disconnected');
+        });
+    });
+    
+global.io = io;
 
 const authMiddleware = require('./middleware/authMiddleware');
 
@@ -23,7 +44,7 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to MongoDB');
         // Start the server only after successful database connection
-        app.listen(port, () => {
+        server.listen(port, () => {
             console.log(`Server started on http://localhost:${port}`);
         });
     })
@@ -59,11 +80,10 @@ app.use(session({
     }),
     cookie: {
         maxAge: 1000 * 60 * 60, // 1 hour
-        secure: process.env.NODE_ENV === 'production', // true if using HTTPS
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // Adjust based on your requirement
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     }
 }));
-
 
 app.use(express.static(__dirname));
 
@@ -73,7 +93,7 @@ app.get('/auth-check', (req, res) => {
 });
 
 app.use((req, res, next) => {
-    console.log('Session Middleware:', req.session);
+    //console.log('Session Middleware:', req.session);
     next();
 });
 

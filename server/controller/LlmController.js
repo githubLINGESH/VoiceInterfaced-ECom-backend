@@ -89,7 +89,7 @@ exports.PromptResponse = async (req, res) => {
             }
         ];
         const searchResults = await vectorizedCollection.aggregate(pipeline).toArray();
-        console.log("Search Results:", JSON.stringify(searchResults, null, 2));
+        //console.log("Search Results:", JSON.stringify(searchResults, null, 2));
         
         // Optionally, handle results based on score
         const MINIMUM_SCORE_THRESHOLD = 0.08; // Define a minimum score threshold if needed

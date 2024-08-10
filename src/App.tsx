@@ -12,6 +12,7 @@ import Desktop3 from "./pages/productView-page";
 import Desktop2 from "./pages/cart-page";
 import Desktop1 from "./pages/home";
 import AddProducts from "pages/AddProducts";
+import VoicePage from "pages/voiceInterface/voiceinterface";
 import SearchPage from "pages/searchResults";
 import { useEffect } from "react";
 
@@ -104,6 +105,7 @@ function App() {
       <Route path="/home" element={<Desktop1 />} />
       <Route path="/addProducts" element={<AddProducts/>}/>
       <Route path="/search" element={<SearchPage/>} />
+      <Route path="/voice-com" element={<VoicePage/>}/>
     </Routes>
     
   );
