@@ -108,7 +108,7 @@ const VoicePage = () => {
 
     // Connect to Socket.IO
     useEffect(() => {
-        const socket = io('http://localhost:3001');
+        const socket = io(`${process.env.REACT_APP_BACKEND_URL}`);
         
         socket.on('connect', () => {
             console.log('Connected to server');

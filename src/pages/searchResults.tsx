@@ -39,7 +39,7 @@ const SearchPage: React.FC = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/prod/search?query=${searchTerm}`);
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/search?query=${searchTerm}`);
                 setSearchResults(response.data.products);
             } catch (error) {
                 console.error('Error fetching search results:', error);
@@ -50,7 +50,7 @@ const SearchPage: React.FC = () => {
 
 
         try{
-            const socket = io('http://localhost:3001');
+            const socket = io(`${process.env.REACT_APP_BACKEND_URL}`);
             socket.on('connect', () => {
                 console.log('Connected to server');
             });
