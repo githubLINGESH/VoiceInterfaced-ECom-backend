@@ -19,7 +19,7 @@ const server = http.createServer(app);
 
     const io = socketIo(server, {
         cors: {
-        origin: "http://localhost:3000",
+        origin: "https://dealon.onrender.com",
         methods: ["GET", "POST"]
         }
     });
@@ -54,7 +54,7 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Enable CORS for all routes
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://dealon.onrender.com',
     credentials: true
 }));
 
