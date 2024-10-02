@@ -24,8 +24,9 @@ const ProductView: FunctionComponent<ProductView3Props> = () => {
         setIsClicked(!IsClicked);
     }
 
-    const handleSelectOption = (selectedOption: string | null) => {
-      setSelectedOption(selectedOption);
+    const handleSelectOption = (option: string | null) => {
+      setSelectedOption(option as any);
+      setIsSidebarVisible(false);
     };
 
     const toggleSidebar = () => {

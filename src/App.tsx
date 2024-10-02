@@ -14,6 +14,7 @@ import Desktop1 from "./pages/home";
 import AddProducts from "pages/AddProducts";
 import VoicePage from "pages/voiceInterface/voiceinterface";
 import SearchPage from "pages/searchResults";
+import AdminDashboard from "pages/AdminDashboard";
 import { useEffect } from "react";
 
 import React from "react";
@@ -97,6 +98,7 @@ function App() {
       <Route path="/" element={<SignUpPage />} />
       <Route path="/login-page" element={<LoginPage />} />
       <Route path="/about" element={<Desktop4 />} />
+      <Route path="/admin" element={<AdminDashboard />} />
       <Route
           path="/product/:productId"
           element={<Desktop3 />} // No need to pass productId here

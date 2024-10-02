@@ -10,6 +10,7 @@ import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
 import Products from "../productData";
 import React from "react";
+import Switch from '@mui/material/Switch';
 
 
 type Product = {
@@ -53,26 +54,38 @@ const Home: FunctionComponent = () => {
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProducts = async (category?: string) => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/prod/products`);
-        console.log("fetched");
+        const categoryParam = category ? `?category=${category}` : ''; // Add category if selected
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/prod/products${categoryParam}`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
         const data = await response.json();
-
-        console.log(data);
         setProducts(data);
-
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
 
-    fetchProducts();
+    fetchProducts(); // Fetch all products by default
   }, []);
+
+  useEffect(() => {
+    if (selectedOption) {
+      console.log("Selected Option", selectedOption);
+      const fetchProductsByCategory = async () => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/prod/products?category=${selectedOption}`);
+          const data = await response.json();
+          setProducts(data);
+        } catch (error) {
+          console.error("Error fetching products by category:", error);
+        }
+      };
+      fetchProductsByCategory();
+    }
+  }, [selectedOption]); // Fetch products when category is selected
 
   
   //handling product selection for product view
@@ -85,6 +98,7 @@ const Home: FunctionComponent = () => {
   // Handling product selection in side navbar
 
   const handleSelectOption = (option: string | null) => {
+    console.log("Option clicked",option);
     setSelectedOption(option as any);
     setIsSidebarVisible(false);
   };

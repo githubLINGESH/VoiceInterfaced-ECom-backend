@@ -159,7 +159,7 @@ const VoicePage = () => {
     };
 
     return (
-        <div className="voice-page flex flex-col items-center p-6">
+        <div className="voice-page flex flex-col items-center p-6 font-inter">
             <div className="w-full flex justify-between items-center mb-4">
                 <label htmlFor="language">Select Language:</label>
                 <select id="language" value={language} onChange={handleLanguageChange} className="ml-2 p-2 rounded border">

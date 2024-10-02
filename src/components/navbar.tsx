@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { Switch } from '@mui/material';
 
 interface NavbarProps {
     toggleSidebar: () => void;
@@ -21,6 +22,12 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption, handl
 
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [checked, setChecked] = useState(false);
+    const handleToggle = () => {
+        setChecked(!checked);
+        checked ? navigate('/home') : navigate('/voice-com');
+      };
+
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
@@ -29,6 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption, handl
         event.preventDefault();
         navigate(`/search?query=${searchTerm}`);
     };
+
 
     return (
         <div className="flex flex-wrap items-center w-full bg-darkslategray-100 h-16 sm:h-20 font-inter text-white text-xs sm:text-sm fixed z-50">
@@ -42,11 +50,14 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption, handl
             </div>
 
             <div className="flex items-center justify-center w-1/6 sm:w-1/12 md:w-1/12 px-2 sm:px-4">
-                <img
+                {/* <img
                     className="w-16 h-auto"
                     alt="plugin icon"
                     src="/plugin-icon--1-1-1@2x.png"
-                />
+                /> */}
+                <div className="border rounded-xl">
+                    <p className="text-6xl font-bold font-inter text-whitesmoke-100 ">V - COM</p>
+                </div>
             </div>
 
             <div className="hidden sm:flex items-center justify-center w-2/4 sm:w-5/12 md:w-4/12 px-2 sm:px-4">
@@ -107,6 +118,11 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption, handl
                         src="/vector3.svg"
                     />
                 </div>
+
+                <Switch
+                    checked={checked}
+                    onChange={handleToggle}
+                />
                 {/* Smaller icon-only profile for small screens */}
                 <div className="flex md:hidden items-center px-2 py-2 rounded-full bg-white cursor-pointer"
                     onClick={handleProfileClick}>

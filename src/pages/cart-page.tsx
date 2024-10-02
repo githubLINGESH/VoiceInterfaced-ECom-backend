@@ -58,8 +58,9 @@ const Cart: FunctionComponent<Cart2Props> = () => {
   }
 
 
-  const handleSelectOption = (selectedOption: string | null) => {
-    setSelectedOption(selectedOption);
+  const handleSelectOption = (option: string | null) => {
+    setSelectedOption(option as any);
+    setIsSidebarVisible(false);
   };
 
     const toggleSidebar = () => {

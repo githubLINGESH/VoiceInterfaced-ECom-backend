@@ -5,12 +5,22 @@ import Userinfo from "components/userinfo";
 import VoiceInterface from "components/voiceInterface/voiceInterface";
 import axios from 'axios';
 
+interface ScrapedProductData {
+    name: string;
+    price: string;
+    description: string;
+    imageSrc: string;
+}
+
+
 const AddProducts: FunctionComponent = () => {
     const [isSidebarVisible, setIsSidebarVisible] = useState(false);
     const [OpenVoice, SetVoiceInterfaceOpen] = useState(false);
     const [IsClicked, setIsClicked] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [file, setFile] = useState<File | null>(null);
+    const [productLink, setProductLink] = useState('');
+    const [scrapedData, setScrapedData] = useState<ScrapedProductData | null>(null);
 
     const toggleSidebar = () => {
         setIsSidebarVisible(!isSidebarVisible);
@@ -62,6 +72,16 @@ const AddProducts: FunctionComponent = () => {
         }
     };
 
+
+    const handleAddProduct = async () => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/prod/Add-productslinks`, { link: productLink });
+            setScrapedData(response.data.product);
+        } catch (error) {
+            console.error('Error adding product:', error);
+        }
+    };
+
     return (
         <div className="font-sora">
             <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
@@ -92,6 +112,30 @@ const AddProducts: FunctionComponent = () => {
                         </button>
                     </div>
                 </form>
+                </div>
+
+                <div className="flex justify-center items-center">
+                <div className="m-2">
+                    <h2>Add Product</h2>
+                    <input
+                        type="text"
+                        className="block w-full text-sm text-gray-900 bg-gray-50 rounded border border-gray-300 cursor-pointer focus:outline-none"
+                        placeholder="Enter product link"
+                        value={productLink}
+                        onChange={(e) => setProductLink(e.target.value)}
+                    />
+                    <button onClick={handleAddProduct} className="mt-2 bg-darkslategray-100 hover:bg-green-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Product</button>
+
+                    {scrapedData && (
+                        <div>
+                            <h3>Scraped Data</h3>
+                            <p>Name: {scrapedData.name}</p>
+                            <p>Price: {scrapedData.price}</p>
+                            <p>Description: {scrapedData.description}</p>
+                            <img src={scrapedData.imageSrc} alt="Product" />
+                        </div>
+                    )}
+                    </div>
                 </div>
         </div>
     );

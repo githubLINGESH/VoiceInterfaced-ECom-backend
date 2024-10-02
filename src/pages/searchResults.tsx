@@ -39,7 +39,7 @@ const SearchPage: React.FC = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/search?query=${searchTerm}`);
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/prod/search?query=${searchTerm}`);
                 setSearchResults(response.data.products);
             } catch (error) {
                 console.error('Error fetching search results:', error);
