@@ -1,18 +1,26 @@
     //controller/productController
     const prod = require('../model/productModel');
+    const RequestedProduct = require('../model/requestedProductsModel');
     const fs = require('fs');
     const path = require('path');
+    const mongoose = require('mongoose');
 
-    exports.getProducts = async(req,res) => {
-        try{
-            const products = await prod.find()
-
-            res.status(200).json(products)
+    exports.getProducts = async (req, res) => {
+        try {
+          const { category } = req.query;
+          let query = {};
+      
+          if (category) {
+            query = { category: { $regex: new RegExp(category, 'i') } }; // Case-insensitive match using regex
+          }
+      
+          const products = await prod.find(query);
+          return res.json(products);
+        } catch (error) {
+          console.error('Error fetching products:', error);
+          res.status(500).send('Server error');
         }
-        catch(error){
-            console.log("Error getting the products", error);
-        }
-    }
+      };
 
     exports.addProductsFromFile = async (req, res) => {
         try {
@@ -34,6 +42,31 @@
         } catch (error) {
             console.error('Error adding products:', error);
             res.status(500).json({ error: 'An error occurred while adding products' });
+        }
+    };
+
+    exports.addProductsFromLink = async (req, res) => {
+        try {
+            const link = req.body.link;
+            console.log("Comes here");
+            console.log(req.session.userId);
+    
+            // Check if userId is valid
+            // if (!mongoose.Types.ObjectId.isValid(req.session.userId)) {
+            //     return res.status(400).json({ error: 'Invalid user ID' });
+            // }
+    
+            // Save the request in the requested_products collection
+            const requestedProduct = new RequestedProduct({
+                user_id: req.session.userId, // Convert to ObjectId
+                link,
+            });
+    
+            await requestedProduct.save();
+            res.status(201).json({ message: 'Product request submitted successfully' });
+        } catch (error) {
+            console.error('Error submitting product request:', error);
+            res.status(500).json({ error: 'An error occurred while submitting the product request' });
         }
     };
 

@@ -12,12 +12,10 @@ const Userinfo: FunctionComponent<{ onClose: () => void;}> = ({ onClose}) => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/getUserInfo`,
-          {
-            method:"GET",
-            credentials: 'include',
-          })
-
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/getUserInfo`,{
+        method : "GET",
+        credentials : "include"
+        });
         const data = await response.json();
         setUser(data);
         setIsAdmin(data.email === 'lingesh2522004@gmail.com'); // Check for admin email
@@ -29,8 +27,9 @@ const Userinfo: FunctionComponent<{ onClose: () => void;}> = ({ onClose}) => {
     fetchUserInfo();
   }, []);
 
-  const NavigateAdmin = () => {
-    navigate("/admin/");
+  const NavigateAdmin =() =>
+  {
+    navigate('/admin/');
   }
 
   return (

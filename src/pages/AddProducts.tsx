@@ -20,7 +20,6 @@ const AddProducts: FunctionComponent = () => {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [file, setFile] = useState<File | null>(null);
     const [productLink, setProductLink] = useState('');
-    const [scrapedData, setScrapedData] = useState<ScrapedProductData | null>(null);
 
     const toggleSidebar = () => {
         setIsSidebarVisible(!isSidebarVisible);
@@ -75,12 +74,27 @@ const AddProducts: FunctionComponent = () => {
 
     const handleAddProduct = async () => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/prod/Add-productslinks`, { link: productLink });
-            setScrapedData(response.data.product);
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/prod/Add-productslink`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ link: productLink }),
+            });
+    
+            // Check if the response is okay (status in the range 200-299)
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json(); // Convert response to JSON
+            console.log(data); // Log the response data
         } catch (error) {
             console.error('Error adding product:', error);
         }
     };
+    
 
     return (
         <div className="font-sora">
@@ -126,16 +140,7 @@ const AddProducts: FunctionComponent = () => {
                     />
                     <button onClick={handleAddProduct} className="mt-2 bg-darkslategray-100 hover:bg-green-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Product</button>
 
-                    {scrapedData && (
-                        <div>
-                            <h3>Scraped Data</h3>
-                            <p>Name: {scrapedData.name}</p>
-                            <p>Price: {scrapedData.price}</p>
-                            <p>Description: {scrapedData.description}</p>
-                            <img src={scrapedData.imageSrc} alt="Product" />
-                        </div>
-                    )}
-                    </div>
+                   </div>
                 </div>
         </div>
     );

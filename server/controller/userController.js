@@ -86,3 +86,23 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: 'Internal server error.' });
     }
 };
+
+
+exports.getUserById = async (req, res) => {
+    try {
+        const userId = req.session.userId;
+        console.log(userId, "Getting user");
+
+        // Wrap userId in an object to specify the field to search
+        const user = await User.findOne({ userId: userId });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ error: 'An error occurred while fetching the user' });
+    }
+};
