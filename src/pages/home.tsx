@@ -10,7 +10,7 @@ import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
 import Products from "../productData";
 import React from "react";
-import Switch from '@mui/material/Switch';
+import Footer from "components/Footer";
 
 
 type Product = {
@@ -240,6 +240,8 @@ const Home: FunctionComponent = () => {
           </div>
           </Link>
         ))}
+
+        <Footer/>
 
       </div>
 
