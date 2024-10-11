@@ -8,7 +8,6 @@ import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
 import '../ProductTemplate.css';
 
-
 type ProductView3Props = {};
 
 const ProductView: FunctionComponent<ProductView3Props> = () => {

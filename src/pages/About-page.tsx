@@ -1,9 +1,11 @@
 import React from 'react';
 import { FunctionComponent } from "react";
 import Navbarr from "../components/navbarr";
+import Footer from "components/Footer";
 
 const AboutPage: FunctionComponent = () => {
   return (
+    <div className='text-left text-white font-inter'>
     <div className="relative bg-white w-full h-[1024px] overflow-hidden text-left text-11xl text-white font-inter">
     <Navbarr/>
       <div className="absolute top-[212px] left-[119px] w-[1202px] h-[759px] text-3xl text-black font-sora">
@@ -27,6 +29,8 @@ const AboutPage: FunctionComponent = () => {
         </div>
         <b className="absolute top-[26px] left-[37px] text-[38px] inline-block text-darkslategray-100 w-[221px] h-[50px]">{`About `}</b>
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 };

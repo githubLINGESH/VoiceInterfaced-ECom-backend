@@ -246,7 +246,6 @@ const Home: FunctionComponent = () => {
       </div>
 
       
-      
   );
 };
 

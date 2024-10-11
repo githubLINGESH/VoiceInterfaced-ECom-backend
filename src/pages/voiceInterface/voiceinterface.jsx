@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import './voiceinterface.css';
 import ProductCard from 'components/prodCard';
 import { useNavigate } from 'react-router-dom';
+import Footer from "components/Footer";
 
 const languages = [
     { code: 'en-US', name: 'English (US)' },
@@ -195,7 +196,6 @@ const VoicePage = () => {
                     ))}
                 </div>
             )}
-
         </div>
     );
 };

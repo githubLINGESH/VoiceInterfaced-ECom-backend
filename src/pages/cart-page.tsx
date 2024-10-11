@@ -5,6 +5,7 @@ import ProdTem from "../components/productTem";
 import SideNavbar from "../components/sidenavbar";
 import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
+import Footer from "components/Footer";
 
 
 type Product = {
