@@ -106,3 +106,22 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching the user' });
     }
 };
+
+// Function to retrieve user information by userId
+exports.getUserInformation = async (userId) => {
+    try {
+        console.log(userId, "Getting user");
+
+        // Find user by userId field
+        const user = await User.findOne({ userId: userId });
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        return user; // Return user data
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        throw new Error('An error occurred while fetching the user');
+    }
+};
