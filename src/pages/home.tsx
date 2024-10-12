@@ -37,21 +37,30 @@ const Home: FunctionComponent = () => {
   const [selectedOption, setSelectedOption] = useState<string>('');
 
 
-  const getCred = async() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/auth-check`,
-      {
-        method:"GET",
-        credentials: 'include',
-      }).then(response => {
-        if(response.ok){
-          const UserIdd = response.json();
-          setUserId(UserIdd);
-        }
-        else{
-          console.log("Some error", response);
-        }
-    })
-  };
+  useEffect(() =>{
+    const getCred = async() => {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/auth-check`,
+        {
+          method:"GET",
+          credentials: 'include',
+        }).then(response => {
+          if(response.ok){
+            const UserIdd = response.json();
+            setUserId(UserIdd);
+            console.log("Home page", userId);
+            if(userId === " "){
+              navigate('/login-page');
+            }
+          }
+          else{
+            console.log("Some error", response);
+          }
+      })
+    };
+
+    getCred();
+  },[])
+  
 
   useEffect(() => {
     const fetchProducts = async (category?: string) => {
@@ -106,7 +115,6 @@ const Home: FunctionComponent = () => {
   // handling add to cart click
   const handleAddToCartClick = (product : Product) => {
     setSelectedProduct(product);
-    getCred();
     fetch(`${process.env.REACT_APP_BACKEND_URL}/cart/add-to-cart`,{
       method: "POST",
       headers:{

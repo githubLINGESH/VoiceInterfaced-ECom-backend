@@ -1,4 +1,5 @@
-const UserContext = require('../model/userContextModel'); // Update with the correct path
+const UserContext = require('../model/userContextModel');
+const LatestViewedProduct = require('../model/latestProductView');
 
 exports.AddUserContext = async (req, res) => {
     try {
@@ -22,3 +23,40 @@ exports.updateUserContext = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
+// Post a viewed product
+exports.postViewedProduct = async (req, res) => {
+    try {
+      const { productId, productName, productPrice, productImageSrc } = req.body;
+      const userId = req.session.userId;
+  
+      console.log(productId, productName, productPrice, productImageSrc);
+      const viewedProduct = new LatestViewedProduct({
+        userId,
+        productId,
+        productName,
+        productPrice,
+        productImageSrc
+      });
+
+  
+      await viewedProduct.save();
+      return res.status(201).json({ message: 'Product viewed and saved successfully!' });
+    } catch (error) {
+      return res.status(500).json({ message: 'Error saving viewed product', error });
+    }
+  };
+  
+  // Get latest viewed products by user ID
+  exports.getLatestViewedProducts = async (req, res) => {
+    try {
+      const userId = req.session.userId;
+  
+      const viewedProducts = await LatestViewedProduct.find({ userId }).sort({ viewedAt: -1 }).limit(10);
+      return res.status(200).json(viewedProducts);
+    } catch (error) {
+      return res.status(500).json({ message: 'Error retrieving viewed products', error });
+    }
+  };
+
+  
