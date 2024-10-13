@@ -60,7 +60,7 @@ exports.PromptResponse = async (req, res) => {
         }
 
         const userInput = req.body.userInput;
-
+        console.log("User Input", userInput);
         // Perform MongoDB search query
         const pipeline = [
             {
@@ -142,6 +142,7 @@ exports.PromptResponse = async (req, res) => {
 
                 Your response should be informative, engaging, and tailored to this specific customer's context and needs.`;
 
+        console.log("Full prompt",enhancedPrompt);
         // Generate response using LLM
         const chain = loadQAChain(genAI, { type: "stuff" });
         const response = await chain._call({

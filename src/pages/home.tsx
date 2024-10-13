@@ -37,29 +37,35 @@ const Home: FunctionComponent = () => {
   const [selectedOption, setSelectedOption] = useState<string>('');
 
 
-  useEffect(() =>{
-    const getCred = async() => {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/auth-check`,
-        {
-          method:"GET",
+  useEffect(() => {
+    const getCred = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth-check`, {
+          method: "GET",
           credentials: 'include',
-        }).then(response => {
-          if(response.ok){
-            const UserIdd = response.json();
-            setUserId(UserIdd);
-            console.log("Home page", userId);
-            if(userId === " "){
-              navigate('/login-page');
-            }
+        });
+  
+        if (response.ok) {
+          const { userId: UserIdd } = await response.json(); // Destructure userId from the response
+  
+          setUserId(UserIdd);
+          console.log("Home page", UserIdd);
+  
+          // Check if userId is null, undefined, or empty (better validation)
+          if (!UserIdd) {
+            navigate('/login-page'); // Redirect to login page if userId is invalid
           }
-          else{
-            console.log("Some error", response);
-          }
-      })
+        } else {
+          console.log("Some error", response);
+        }
+      } catch (error) {
+        console.error("Error fetching credentials:", error);
+      }
     };
-
+  
     getCred();
-  },[])
+  }, [navigate]); // Make sure 'navigate' is included in the dependency array
+  
   
 
   useEffect(() => {
