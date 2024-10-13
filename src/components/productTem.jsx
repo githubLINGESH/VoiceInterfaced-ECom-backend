@@ -1,4 +1,5 @@
 import React from 'react';
+import CopyToClipboard from './clipboard';
         import { Router, useNavigate,Link } from "react-router-dom";
 
 
@@ -32,9 +33,35 @@ import React from 'react';
                                 </div>
                         </div>
                         <div className="grid col-span-1 cursor-pointer flex flex-col items-center space-y-2">
-                                <img src="/telegram-icon.svg" alt="Telegram" className="w-6 h-6" />
-                                <img src="/whatsapp-icon.svg" alt="WhatsApp" className="w-6 h-6" />
-                                <img src="/pixelarticonscopy.svg" alt="Copy" className="w-6 h-6" />
+                        <CopyToClipboard text={product.link} copyIcon="/pixelarticonscopy.svg" />
+                    <a
+                            href={`tg://msg_url?url=${encodeURIComponent(product.link)}`}
+                            style={{
+                                textDecoration: 'none', // Remove underline
+                                color: 'inherit', // Inherit text color
+                                cursor: 'pointer', // Change cursor on hover
+                            }}
+                            >
+                        <img
+                            className="max-w-full overflow-hidden max-h-full"
+                            alt=""
+                            src="/telegram-icon.svg"
+                        />
+                        </a>
+                        <a
+                        href={`whatsapp://send?text=${product.link}`}
+                        style={{
+                            textDecoration: 'none', // Remove underline
+                            color: 'inherit', // Inherit text color
+                            cursor: 'pointer', // Change cursor on hover
+                        }}
+                        >
+                        <img
+                            className="max-w-full overflow-hidden max-h-full"
+                            alt=""
+                            src="/whatsapp-icon.svg"
+                        />
+                        </a>
                         </div>
                         <span>₹{product.price}</span>
                 </div>

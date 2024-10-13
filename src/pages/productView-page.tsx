@@ -20,28 +20,7 @@ const ProductView: FunctionComponent<ProductView3Props> = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
   const [IsClicked, setIsClicked] = useState(false);
-  const [checkUser, setUserId] = useState<any>(null);
 
-
-  const getCred = async() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/auth-check`,
-      {
-        method:"GET",
-        credentials: 'include',
-      }).then(response => {
-        if(response.ok){
-          const userId  = response.json();
-          setUserId(userId);
-
-          if(checkUser === ""){
-            navigate('/login-page');
-          }
-        }
-        else{
-          console.log("Some error", response);
-        }
-    })
-  };
 
   // Handling profile click
   const handleProfileClick = () => {
