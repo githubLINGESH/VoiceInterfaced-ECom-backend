@@ -7,7 +7,6 @@ import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
 import Footer from "components/Footer";
 
-
 type Product = {
   id: number;
   name: string;
@@ -24,94 +23,85 @@ type Cart2Props = {};
 
 const Cart: FunctionComponent<Cart2Props> = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-  const [selectedOption,setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
   const [OpenVoice, SetVoiceInterfaceOpen] = useState(false);
   const [IsClicked, setIsClicked] = useState(false);
 
+  // Function to fetch cart products
+  const getCartProducts = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/cart/getcart-products`, {
+        method: "GET",
+        credentials: "include"
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setCartProducts(data.products);
+      } else {
+        console.error('Failed to fetch products');
+      }
+    } catch (error) {
+      console.error('Error occurred', error);
+    }
+  };
 
   useEffect(() => {
-    const getCartProducts = async () => {
-      try {
-        // use hosted api during production - https://voiceinterfaced-ecom-backend.onrender.com/cart/getcart-products
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/cart/getcart-products`,{
-          method:"GET",
-          credentials:"include"
-        });
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          setCartProducts(data.products);
-        } else {
-          console.error('Failed to fetch products');
-        }
-      } catch (error) {
-        console.error('Error occurred', error);
-      }
-    };
-    getCartProducts();
+    getCartProducts(); // Fetch cart products on mount
   }, []);
-
-
-  if (!cartProducts.length) {
-    // Handle the case where no products are found
-    return <div>No products found</div>;
-  }
-
 
   const handleSelectOption = (option: string | null) => {
     setSelectedOption(option as any);
     setIsSidebarVisible(false);
   };
 
-    const toggleSidebar = () => {
-      setIsSidebarVisible(!isSidebarVisible);
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
   };
 
   const closeSidebar = () => {
     setIsSidebarVisible(false);
   };
 
-  const handleVoiceOption = () =>{
+  const handleVoiceOption = () => {
     SetVoiceInterfaceOpen(!OpenVoice);
+  };
+
+  // Handle profile click
+  const handleProfileClick = () => {
+    setIsClicked(!IsClicked);
+  };
+
+  // Handle product deletion
+  const handleDeleteProduct = () => {
+    getCartProducts(); // Refresh cart after product is deleted
+  };
+
+  if (!cartProducts.length) {
+    return <div>No products found</div>;
   }
 
-    //handling profile click
-  
-    const handleProfileClick = () =>{
-        setIsClicked(!IsClicked);
-    }
-
-    // Assuming you have an array of products, you can filter the product with the matching ID
   return (
     <div className="relative bg-white w-full h-[1024px] text-left text-base text-darkslategray-100 font-sora">
-        <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick}/>
-        {/* form div */}
-        {isSidebarVisible && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={closeSidebar}
-        />
+      <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
+      {isSidebarVisible && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={closeSidebar} />
       )}
       <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
-      {IsClicked&&<Userinfo onClose={handleProfileClick}/>}
+      {IsClicked && <Userinfo onClose={handleProfileClick} />}
       <VoiceInterface isVoice={OpenVoice} />
-      {OpenVoice &&<div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={handleVoiceOption}>
-      </div>}
-      <b className="mt-20 px-4 inline-block text-[35px] text-black">
-        Shopping cart
-      </b>
+      {OpenVoice && <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={handleVoiceOption}></div>}
+      <b className="mt-20 px-4 inline-block text-[35px] text-black">Shopping cart</b>
       <div className="px-4">
-      <div className="py-2 px-2 grid grid-cols-1 md:grid-cols-2 box-border h-px border-t-[1px] border-solid border-black">
-        {cartProducts.map((product) => (
-          <ProdTem key={product.id} product={product} />
-        ))}
+        <div className="py-2 px-2 grid grid-cols-1 md:grid-cols-2 box-border h-px border-t-[1px] border-solid border-black">
+          {cartProducts.map((product) => (
+            <ProdTem key={product.id} product={product} onDelete={handleDeleteProduct} />
+          ))}
+        </div>
       </div>
-      </div>
-      </div>
-
-    );
-  };
+    </div>
+  );
+};
 
 export default Cart;

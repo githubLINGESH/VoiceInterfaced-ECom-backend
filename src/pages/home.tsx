@@ -11,6 +11,7 @@ import Userinfo from "components/userinfo";
 import Products from "../productData";
 import React from "react";
 import Footer from "components/Footer";
+import VideoPopup from "components/videoPopup/videoPopup";
 
 
 type Product = {
@@ -35,6 +36,7 @@ const Home: FunctionComponent = () => {
   const [IsClicked, setIsClicked] = useState(false);
   const [SelectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedOption, setSelectedOption] = useState<string>('');
+  const [showVideoPopup, setShowVideoPopup] = useState(false);
 
 
   useEffect(() => {
@@ -66,6 +68,23 @@ const Home: FunctionComponent = () => {
     getCred();
   }, [navigate]); // Make sure 'navigate' is included in the dependency array
   
+
+  useEffect(() => {
+    const handleExitIntent = (event: MouseEvent) => {
+      if (event.clientY < 10) {
+        setShowVideoPopup(true); // Show the popup when mouse is near the top
+      }
+    };
+
+    document.addEventListener("mouseout", handleExitIntent);
+    return () => {
+      document.removeEventListener("mouseout", handleExitIntent);
+    };
+  }, []);
+
+  const handleClosePopup = () => {
+    setShowVideoPopup(false); // Close the video popup
+  };
   
 
   useEffect(() => {
@@ -107,35 +126,68 @@ const Home: FunctionComponent = () => {
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
-    navigate(`/product/${product.id}`,{state:{product}});
+    // Optional: add a brief highlight effect
+    document.getElementById(`product-${product.id}`)?.classList.add('highlight');
+    setTimeout(() => {
+      document.getElementById(`product-${product.id}`)?.classList.remove('highlight');
+    }, 500);
+    navigate(`/product/${product.id}`, { state: { product } });
   };
+  
 
   // Handling product selection in side navbar
 
   const handleSelectOption = (option: string | null) => {
-    console.log("Option clicked",option);
+    //console.log("Option clicked",option);
     setSelectedOption(option as any);
     setIsSidebarVisible(false);
   };
 
-  // handling add to cart click
-  const handleAddToCartClick = (product : Product) => {
-    setSelectedProduct(product);
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/cart/add-to-cart`,{
-      method: "POST",
-      headers:{
-        "Content-type" : "application/json"
-      },
-      credentials: 'include',
-      body: JSON.stringify({products : product})
+  const scrollToProductSection = () => {
+    const productSection = document.getElementById("product-section");
+    if (productSection) {
+      productSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
+  // Call this function after fetching products
+  useEffect(() => {
+    if (products.length > 0 && selectedOption!= '') {
+      scrollToProductSection();
+    }
+  }, [products]);
+  
 
-    }).then((response) =>{
-      if(response.ok){
+  // handling add to cart click
+  const handleAddToCartClick = (product: Product) => {
+    setSelectedProduct(product);
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/cart/add-to-cart`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ products: product }),
+    }).then((response) => {
+      if (response.ok) {
         console.log("Added Successfully");
+  
+        // Safely access the element using optional chaining
+        const addToCartButton = document.getElementById(`add-to-cart-${product.id}`);
+        if (addToCartButton) {
+          addToCartButton.innerText = 'Added!';
+          
+          setTimeout(() => {
+            addToCartButton.innerText = 'Add to Cart';
+          }, 2000);
+        }
+  
         navigate("/cart/");
       }
     });
   };
+  
+  
 
   //voice interface handling
   const handleVoiceOption = () => {
@@ -157,6 +209,19 @@ const Home: FunctionComponent = () => {
       setIsClicked(!IsClicked);
   };
 
+  // Handle product deletion
+  const handleDeleteProduct = () => {
+    //getCartProducts(); // Refresh cart after product is deleted
+  };
+
+  const SkeletonLoader = () => (
+    <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-4">
+      {Array(10).fill(0).map((_, index) => (
+        <div key={index} className="w-full h-48 bg-gray-300 animate-pulse" />
+      ))}
+    </div>
+  );
+
   //passing the carted added
 
   return (
@@ -171,6 +236,7 @@ const Home: FunctionComponent = () => {
       <div className="relative">
           {/* If isVisible true only Side navbar visible*/}
           <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
+          <VideoPopup show={showVideoPopup} onClose={handleClosePopup} />
           {IsClicked && <Userinfo onClose={handleProfileClick}/>}
           <div className="py-10" style={{ overflow: 'hidden', width: '100%', height: '700px' }}>
             <div className="slider-inner-container">
@@ -210,7 +276,8 @@ const Home: FunctionComponent = () => {
       </div>
 
 
-      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5">
+      {products.length === 0 ? <SkeletonLoader /> : (
+      <div id="product-section" className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5">
         {products.map((product) => (
           <ProductCard
             key={product.id}
@@ -219,7 +286,8 @@ const Home: FunctionComponent = () => {
             onAddToCartClick={handleAddToCartClick}
           />
         ))}
-      </div>
+        </div>
+      )}
       
       <VoiceInterface isVoice={OpenVoice} />
       {OpenVoice &&<div
@@ -242,12 +310,13 @@ const Home: FunctionComponent = () => {
 
 
           {SelectedProduct && (
-              <ProdTem product={SelectedProduct} />
+              <ProdTem product={SelectedProduct} onDelete={handleDeleteProduct}/>
               )}
 
         {Products.map((product) => (
         <Link to={"/cart"} key={product.id}>
           <div
+            id={`add-to-cart-${product.id}`}
             className="cursor-pointer"
             onClick={() => handleAddToCartClick(product)}
           >
