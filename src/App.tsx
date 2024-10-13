@@ -1,5 +1,4 @@
 import {
-  BrowserRouter,
   Routes,
   Route,
   useNavigationType,
@@ -15,27 +14,12 @@ import AddProducts from "pages/AddProducts";
 import VoicePage from "pages/voiceInterface/voiceinterface";
 import SearchPage from "pages/searchResults";
 import AdminDashboard from "pages/AdminDashboard";
+import { AuthProvider } from "context/AuthContext";
+import PrivateRoute from "components/privateRoute";
 import { useEffect } from "react";
 
 import React from "react";
-import ReactDOM from "react-dom";
 
-
-ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-      <Route path="/" element={<App />} />
-        {/* Other routes */}
-        <Route
-          path="/desktop-3/:productId"
-          element={<Desktop3 />} // No need to pass productId here
-        />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
 
 function App() {
   const action = useNavigationType();
@@ -94,24 +78,54 @@ function App() {
   }, [pathname]);
 
   return (
-    <Routes>
-      <Route path="/" element={<SignUpPage />} />
-      <Route path="/login-page" element={<LoginPage />} />
-      <Route path="/about" element={<Desktop4 />} />
-      <Route path="/admin" element={<AdminDashboard />} />
-      <Route
-          path="/product/:productId"
-          element={<Desktop3 />} // No need to pass productId here
-        />
-      <Route path="/cart" element={<Desktop2 />} />
-      <Route path="/home" element={<Desktop1 />} />
-      <Route path="/addProducts" element={<AddProducts/>}/>
-      <Route path="/search" element={<SearchPage/>} />
-      <Route path="/voice-com" element={<VoicePage/>}/>
-    </Routes>
-    
+    <AuthProvider>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<SignUpPage />} />
+        <Route path="/login-page" element={<LoginPage />} />
+        <Route path="/about" element={<Desktop4 />} />
+
+        {/* Private Routes (Protected) */}
+        <Route path="/product/:productId" element={
+          <PrivateRoute>
+            <Desktop3 />
+          </PrivateRoute>
+        } />
+        <Route path="/cart" element={
+          <PrivateRoute>
+            <Desktop2 />
+          </PrivateRoute>
+        } />
+        <Route path="/home" element={
+          <PrivateRoute>
+            <Desktop1 />
+          </PrivateRoute>
+        } />
+        <Route path="/addProducts" element={
+          <PrivateRoute>
+            <AddProducts />
+          </PrivateRoute>
+        } />
+        <Route path="/search" element={
+          <PrivateRoute>
+            <SearchPage />
+          </PrivateRoute>
+        } />
+        <Route path="/voice-com" element={
+          <PrivateRoute>
+            <VoicePage />
+          </PrivateRoute>
+        } />
+        <Route path="/admin" element={
+          <PrivateRoute>
+            <AdminDashboard />
+          </PrivateRoute>
+        } />
+      </Routes>
+    </AuthProvider>
   );
 }
+
 export default App;
 
 
