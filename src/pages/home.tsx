@@ -69,16 +69,41 @@ const Home: FunctionComponent = () => {
   }, [navigate]); // Make sure 'navigate' is included in the dependency array
   
 
-  useEffect(() => {
-    const handleExitIntent = (event: MouseEvent) => {
-      if (event.clientY < 10) {
-        setShowVideoPopup(true); // Show the popup when mouse is near the top
-      }
-    };
+  // Handle inactivity (no activity for 8 seconds)
+  const handleUserActivity = () => {
+    clearTimeout(inactivityTimer); // Reset the timer on any user action
+    inactivityTimer = setTimeout(() => {
+      setShowVideoPopup(true); // Show popup after 8 seconds of inactivity
+    }, 8000);
+  };
 
-    document.addEventListener("mouseout", handleExitIntent);
+  // Handle exit intent (mouse moves near the top of the window)
+  const handleExitIntent = (event: MouseEvent) => {
+    if (event.clientY < 10) {
+      setShowVideoPopup(true); // Show the popup when mouse is near the top
+    }
+  };
+
+  let inactivityTimer: NodeJS.Timeout;
+
+
+  useEffect(() => {
+    // Add event listeners for inactivity and exit intent
+    document.addEventListener('mousemove', handleUserActivity);
+    document.addEventListener('keydown', handleUserActivity);
+    document.addEventListener('scroll', handleUserActivity);
+    document.addEventListener('mouseout', handleExitIntent);
+
+    // Start inactivity timer initially
+    handleUserActivity();
+
+    // Cleanup event listeners and timer on component unmount
     return () => {
-      document.removeEventListener("mouseout", handleExitIntent);
+      document.removeEventListener('mousemove', handleUserActivity);
+      document.removeEventListener('keydown', handleUserActivity);
+      document.removeEventListener('scroll', handleUserActivity);
+      document.removeEventListener('mouseout', handleExitIntent);
+      clearTimeout(inactivityTimer);
     };
   }, []);
 
@@ -188,7 +213,6 @@ const Home: FunctionComponent = () => {
   };
   
   
-
   //voice interface handling
   const handleVoiceOption = () => {
     SetVoiceInterfaceOpen(!OpenVoice);
