@@ -150,4 +150,13 @@ body {
   animation: slide 2s ease-in-out infinite;
 }
 
+html, body {
+  overflow: scroll; /* Ensure page is scrollable */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  background-color: darkslategray;
+}
 
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}

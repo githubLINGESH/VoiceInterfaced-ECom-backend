@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import { FunctionComponent, useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import Navbar from "../components/navbar";
+import Navbar from "../components/navbar/navbar";
 import ProductTemplate from "../components/ProductTemplate";
-import SideNavbar from "../components/sidenavbar";
+import SideNavbar from "../components/sideNavbar/sidenavbar";
 import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
 import '../ProductTemplate.css';
-import { Navigate } from "react-router-dom";
 import axios from 'axios';
 
 type ProductView3Props = {};
@@ -68,7 +67,7 @@ const ProductView: FunctionComponent<ProductView3Props> = () => {
   }, [product]);
 
   return (
-    <div className="relative bg-white w-full h-[1024px] overflow-hidden text-left text-3xl text-darkslategray-100 font-sora">
+    <div className="bg-white w-full text-left text-base text-darkslategray-100 font-sora">
       <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
       {/* form div */}
       {isSidebarVisible && (
@@ -84,7 +83,7 @@ const ProductView: FunctionComponent<ProductView3Props> = () => {
         className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={handleVoiceOption}>
       </div>}
 
-      <div className="m-4 py-20 flex items-center justify-center">
+      <div className="py-20 flex items-center justify-center">
         <ProductTemplate product={product} />
       </div>
     </div>

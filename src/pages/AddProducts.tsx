@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from "react";
-import Navbar from "components/navbar";
-import SideNavbar from "components/sidenavbar";
+import Navbar from "components/navbar/navbar";
+import SideNavbar from "components/sideNavbar/sidenavbar";
 import Userinfo from "components/userinfo";
 import VoiceInterface from "components/voiceInterface/voiceInterface";
 import axios from 'axios';

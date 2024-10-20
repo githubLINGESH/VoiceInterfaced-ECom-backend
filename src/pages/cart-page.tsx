@@ -1,8 +1,8 @@
 import React from "react";
 import { FunctionComponent, useEffect, useState } from "react";
-import Navbar from "../components/navbar";
+import Navbar from "../components/navbar/navbar";
 import ProdTem from "../components/productTem";
-import SideNavbar from "../components/sidenavbar";
+import SideNavbar from "../components/sideNavbar/sidenavbar";
 import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
 import Footer from "components/Footer";
@@ -83,7 +83,7 @@ const Cart: FunctionComponent<Cart2Props> = () => {
   }
 
   return (
-    <div className="relative bg-white w-full h-[1024px] text-left text-base text-darkslategray-100 font-sora">
+    <div className="bg-white w-full h-[1024px] text-left text-base text-darkslategray-100 font-sora">
       <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
       {isSidebarVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={closeSidebar} />

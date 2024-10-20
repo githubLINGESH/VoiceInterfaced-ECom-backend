@@ -1,24 +1,24 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './slider.css';
 
-const Slider = () => {
+interface TrendingProduct {
+    id: number;
+    imageUrl: string;
+    productName: string;
+}
+
+interface SliderProps {
+    trendingProducts: TrendingProduct[]; // Accept trending products as props
+}
+
+const Slider: React.FC<SliderProps> = ({ trendingProducts }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
-    const sliderItems = [
-        "/kithremovebgpreview-1@2x.png",
-        "/mobilesremovebgpreview-1@2x.png",
-        "/earphonesremovebgpreview-1@2x.png",
-        "/lapremovebgpreview-1@2x.png",
-        "/lapremovebgpreview-1@2x.png",
-        "/lapremovebgpreview-1@2x.png",
-        "/lapremovebgpreview-1@2x.png"
-    ];
-    const totalSlides = sliderItems.length;
+    const totalSlides = trendingProducts.length;
     const visibleSlides = 5; // Number of visible slides in the container
 
     // Duplicate first few slides at the end for seamless looping
-    const extendedSliderItems = [...sliderItems, ...sliderItems.slice(0, visibleSlides)];
+    const extendedSliderItems = [...trendingProducts, ...trendingProducts.slice(0, visibleSlides)];
 
     useEffect(() => {
         const moveSlider = () => {
@@ -35,7 +35,7 @@ const Slider = () => {
             setTimeout(() => {
                 setIsTransitioning(false);
                 setCurrentSlide(0);
-            }, 300); // Match this timeout with the CSS transition duration
+            }, 500); // Match this timeout with the CSS transition duration
         }
     }, [currentSlide, isTransitioning, totalSlides]);
 
@@ -45,21 +45,21 @@ const Slider = () => {
                 className="slider-cont"
                 style={{
                     transform: `translateX(-${currentSlide * (100 / visibleSlides)}%)`,
-                    transition: isTransitioning ? 'transform 0.3s ease-in-out' : 'none'
+                    transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
                 }}
             >
-                {extendedSliderItems.map((item, index) => (
+                {extendedSliderItems.map((product, index) => (
                     <div key={index} className="slider-it bg-darkslategray-100">
                         <img
                             className="slider-image object-contain"
-                            alt=""
-                            src={item}
+                            alt={product.productName}
+                            src={product.imageUrl}
                         />
                     </div>
                 ))}
             </div>
         </div>
     );
-};
+}
 
 export default Slider;

@@ -4,7 +4,7 @@
     const ProductTemplate = ({ product }) => {
 
     return (
-        <div className="grid sm:grid-rows-2 bg-whitesmoke-100 w-3/4 h-3/4">
+        <div className="m-4 grid sm:grid-rows-2 bg-whitesmoke-100 w-3/4 h-3/4 text-3xl">
             {/* Product image and pricing */}
             <div className="grid row-span-1 grid-cols-1 md:grid-cols-2">
                 {/* Product image */ }

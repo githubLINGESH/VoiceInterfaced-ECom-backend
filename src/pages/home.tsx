@@ -1,10 +1,11 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ProductTemplate from "../components/ProductTemplate";
-import Navbar from "../components/navbar";
+import Navbar from "../components/navbar/navbar";
 import ProductCard from "../components/prodCard";
 import ProdTem from "../components/productTem";
-import SideNavbar from "../components/sidenavbar";
+import CategoryCarousel from "components/CategoryGrid/CategoryGrid";
+import SideNavbar from "../components/sideNavbar/sidenavbar";
 import Slider from "../components/slider/slider";
 import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
@@ -26,6 +27,54 @@ type Product = {
   link: string;
 };
 
+interface Category {
+  name: string;
+  imageUrl: string;
+  link: string;
+  orientation: 'portrait' | 'landscape'; // Specify as a union type
+}
+
+interface TrendingProduct {
+  id: number;
+  product : Product
+  imageUrl: string;
+  productName: string;
+}
+
+
+const categories : Category[] = [
+  {
+      name: 'Kitchen',
+      imageUrl: '/category/kitchen-edited.jpg',
+      link: '/category/kitchen',
+      orientation : 'landscape'
+  },
+  {
+      name: 'Smartphones',
+      imageUrl: '/category/smartphones-edited.jpg',
+      link: '/category/smartphones',
+      orientation : 'portrait'
+  },
+  {
+      name: 'Earphones',
+      imageUrl: '/category/earphones-edited.jpg',
+      link: '/category/earphones',
+      orientation : 'landscape'
+  },
+  {
+      name: 'Electronics',
+      imageUrl: '/category/electronics-edited.jpg',
+      link: '/category/electronics',
+      orientation : 'landscape'
+  },
+  {
+      name: 'Footwear',
+      imageUrl: '/category/footwear-edited.jpg',
+      link: '/category/footwear',
+      orientation : 'landscape'
+  },
+];
+
 
 const Home: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -37,6 +86,7 @@ const Home: FunctionComponent = () => {
   const [SelectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [showVideoPopup, setShowVideoPopup] = useState(false);
+  const [trendingProducts, setTrendingProducts] = useState<TrendingProduct[]>([]);
 
 
   useEffect(() => {
@@ -74,12 +124,12 @@ const Home: FunctionComponent = () => {
     clearTimeout(inactivityTimer); // Reset the timer on any user action
     inactivityTimer = setTimeout(() => {
       setShowVideoPopup(true); // Show popup after 8 seconds of inactivity
-    }, 8000);
+    }, 80000);
   };
 
   // Handle exit intent (mouse moves near the top of the window)
   const handleExitIntent = (event: MouseEvent) => {
-    if (event.clientY < 10) {
+    if (event.clientY < 10 && event.clientX >1200) {
       setShowVideoPopup(true); // Show the popup when mouse is near the top
     }
   };
@@ -110,6 +160,25 @@ const Home: FunctionComponent = () => {
   const handleClosePopup = () => {
     setShowVideoPopup(false); // Close the video popup
   };
+
+  // Fetch trending products from the backend
+  useEffect(() => {
+    const fetchTrendingProducts = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/prod/trending-products`,{
+              method: 'GET',
+              credentials : 'include'
+            });
+            const data = await response.json();
+            console.log("Trending Products", data);
+            setTrendingProducts(data);
+        } catch (error) {
+            console.error('Error fetching trending products:', error);
+        }
+    };
+
+    fetchTrendingProducts();
+}, []);
   
 
   useEffect(() => {
@@ -262,40 +331,25 @@ const Home: FunctionComponent = () => {
           <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
           <VideoPopup show={showVideoPopup} onClose={handleClosePopup} />
           {IsClicked && <Userinfo onClose={handleProfileClick}/>}
-          <div className="py-10" style={{ overflow: 'hidden', width: '100%', height: '700px' }}>
-            <div className="slider-inner-container">
-              <div className="slider-container">
-                <img
-                  className="m-4"
-                  alt="ad 1"
-                  src="/ads.png"
-                />
-              </div>
-              <div className="slider-container">
-                <img
-                  className="m-4"
-                  alt="ad 2"
-                  src="/ads.png"
-                />
-              </div>
-              <div className="slider-container">
-                <img
-                  className="m-4"
-                  alt="ad 3"
-                  src="/ads.png"
-                />
-              </div>
-              <div className="slider-container">
-                <img
-                  className="m-4"
-                  alt="ad 4"
-                  src="/ads.png"
-                />
-              </div>
-          </div>
-          </div>
-          <div className="px-4 py-2">
-            <Slider />
+          <div className="mt-10 px-4 py-8 ">
+          <h2 className="text-center font-bold text-2xl mb-4">Trending Products</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-4">
+              {trendingProducts.length > 0 ? (
+                 trendingProducts.map((item: TrendingProduct) => (
+                  <ProductCard
+                    key={item.product.id} // Assuming product has an id field
+                    product={item.product} // Pass the product details
+                    onProductClick={handleProductClick}
+                    onAddToCartClick={handleAddToCartClick}
+                  />
+                ))
+              ) : (
+                  <p>Loading trending products...</p>
+              )}
+        </div>
+        </div>
+          <div className="py-2 mt-2">
+            <CategoryCarousel categories={categories} />
           </div>
       </div>
 
