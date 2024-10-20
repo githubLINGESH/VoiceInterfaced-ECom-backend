@@ -28,7 +28,7 @@ type Product = {
 };
 
 interface Category {
-  name: string;
+  name: string; 
   imageUrl: string;
   link: string;
   orientation: 'portrait' | 'landscape'; // Specify as a union type
@@ -39,6 +39,11 @@ interface TrendingProduct {
   product : Product
   imageUrl: string;
   productName: string;
+}
+
+interface LatestProduct {
+  productId: number;
+  product : Product
 }
 
 
@@ -87,6 +92,7 @@ const Home: FunctionComponent = () => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [showVideoPopup, setShowVideoPopup] = useState(false);
   const [trendingProducts, setTrendingProducts] = useState<TrendingProduct[]>([]);
+  const [LatestProducts, setLatestProducts] = useState<LatestProduct[]>([]);
 
 
   useEffect(() => {
@@ -178,6 +184,26 @@ const Home: FunctionComponent = () => {
     };
 
     fetchTrendingProducts();
+}, []);
+
+
+  // Fetch latest products from the backend
+  useEffect(() => {
+    const fetchLatestProducts = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/UContext/get-viewed-product/`,{
+              method: 'GET',
+              credentials : 'include'
+            });
+            const data = await response.json();
+            console.log("Lateset Products", data);
+            setLatestProducts(data);
+        } catch (error) {
+            console.error('Error fetching latest products:', error);
+        }
+    };
+
+    fetchLatestProducts();
 }, []);
   
 
@@ -331,7 +357,7 @@ const Home: FunctionComponent = () => {
           <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
           <VideoPopup show={showVideoPopup} onClose={handleClosePopup} />
           {IsClicked && <Userinfo onClose={handleProfileClick}/>}
-          <div className="mt-10 px-4 py-8 ">
+          <div className="mt-10 px-4 py-8">
           <h2 className="text-center font-bold text-2xl mb-4">Trending Products</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-4">
               {trendingProducts.length > 0 ? (
@@ -352,6 +378,24 @@ const Home: FunctionComponent = () => {
             <CategoryCarousel categories={categories} />
           </div>
       </div>
+
+      <div className="mt-10 px-4 py-8">
+          <h2 className="text-center font-bold text-2xl mb-4">Latest Products</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5">
+              {LatestProducts.length > 0 ? (
+                 LatestProducts.map((item: LatestProduct) => (
+                  <ProductCard
+                    key={item.productId} // Assuming product has an id field
+                    product={item.product} // Pass the product details
+                    onProductClick={handleProductClick}
+                    onAddToCartClick={handleAddToCartClick}
+                  />
+                ))
+              ) : (
+                  <p>Loading Latest products...</p>
+              )}
+        </div>
+        </div>
 
 
       {products.length === 0 ? <SkeletonLoader /> : (

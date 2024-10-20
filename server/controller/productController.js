@@ -1,6 +1,8 @@
     //controller/productController
     const prod = require('../model/productModel');
     const RequestedProduct = require('../model/requestedProductsModel');
+    //const trendingProducts = require('../model/trendingProductsModel');
+    const LatestViewedProduct = require('../model/latestProductView');
     const fs = require('fs');
     const path = require('path');
     const mongoose = require('mongoose');
@@ -88,3 +90,45 @@
         }
     };
     
+    // Get trending products based on the last 14 days of views
+exports.getTrendingProducts = async (req, res) => {
+    try {
+        // Calculate the date 14 days ago from today
+        const fourteenDaysAgo = new Date();
+        fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+
+        // Aggregate to count the number of views for each product in the last 14 days
+        const trendingProducts = await LatestViewedProduct.aggregate([
+            {
+                $match: {
+                    viewedAt: { $gte: fourteenDaysAgo }
+                }
+            },
+            {
+                $group: {
+                    _id: "$productId", // Group by productId
+                    count: { $sum: 1 } // Count the number of views
+                }
+            },
+            {
+                $sort: { count: -1 } // Sort by most views
+            },
+            {
+                $limit: 4 // Optional: limit to top 10 trending products
+            }
+        ]);
+
+        console.log(trendingProducts);
+
+        // Populate the product details using the productId
+        const populatedTrendingProducts = await Promise.all(trendingProducts.map(async (product) => {
+            const productDetails = await prod.findOne({id : product._id}); // Assuming `prod` is your Product model
+            return { product: productDetails, views: product.count };
+        }));
+
+        res.status(200).json(populatedTrendingProducts);
+    } catch (error) {
+        console.error('Error fetching trending products:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};

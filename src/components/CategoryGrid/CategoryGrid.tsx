@@ -31,7 +31,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
 
     // Auto-slide after 5 seconds
     useEffect(() => {
-        const interval = setInterval(handleNext, 5000);
+        const interval = setInterval(handleNext, 8000); // 8 seconds for smoother experience
         return () => clearInterval(interval);
     }, []);
 
@@ -42,7 +42,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
                 <div
                     className="carousel-slider"
                     style={{
-                        transform: `translateX(-${currentIndex * 100}%)`,
+                        transform: `translateX(-${currentIndex * (100 / 3)}%)`, // Adjust for 3 items
                     }}
                 >
                     {categories.map((category, index) => (

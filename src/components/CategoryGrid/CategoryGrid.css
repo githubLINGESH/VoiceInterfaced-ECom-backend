@@ -1,43 +1,63 @@
-/* Overall wrapper and carousel structure */
+/* Overall wrapper and carousel structure with gradient background */
 .category-carousel-wrapper {
     position: relative;
     overflow: hidden;
     border-radius: 10px;
-    background-color: #f9f9f9;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #2C3E50, #2C3E50); /* Soft blue gradient */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
 }
 
+/* Title styling */
 .category-carousel-title {
     font-size: 1.8rem;
     text-align: center;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
+    color: #fff; /* White text color to contrast with gradient background */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); /* Add subtle text shadow */
 }
 
 /* Carousel container */
 .category-carousel {
     width: 100%;
-    height: 800px; /* Set fixed height (reduce this value to shrink height) */
+    height: 300px;
     position: relative;
     overflow: hidden;
 }
 
-.carousel-slider {
-    display: flex;
+/* Gradient on the sides of the carousel to create a fade-out effect */
+.category-carousel::before, .category-carousel::after {
+    content: '';
     position: absolute;
     top: 0;
+    bottom: 0;
+    width: 100px; /* Side gradient width */
+    z-index: 5;
+}
+
+/* Gradient on the sides of the carousel with #2C3E50 */
+.category-carousel::before {
     left: 0;
+    background: linear-gradient(to right, rgba(44, 62, 80, 1), rgba(44, 62, 80, 0)); /* Gradient from #2C3E50 to transparent */
+}
+
+.category-carousel::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(44, 62, 80, 1), rgba(44, 62, 80, 0)); /* Gradient from #2C3E50 to transparent */
+}
+
+/* Carousel slider with smoother transition */
+.carousel-slider {
+    display: flex;
     height: 100%;
-    width: 100%;
-    transition: transform 0.5s ease-in-out;
+    transition: transform 1.5s ease-in-out;
 }
 
 /* Each individual item */
 .carousel-item {
-    min-width: 100%; /* Each item takes up the full container width */
-    height: 100%; /* Full height of the carousel */
+    flex: 0 0 33%; /* Show 3 items at once */
+    margin-right: 10px;
     position: relative;
     overflow: hidden;
     border-radius: 10px;
@@ -47,21 +67,24 @@
 .carousel-item img {
     width: 100%;
     height: 100%;
-    object-fit:  cover; /* Ensures the full image is shown without cropping */
+    object-fit: cover; /* Scale image to cover without distorting */
     transition: transform 0.3s ease-in-out;
+    border-radius: 10px; /* Rounded corners for images */
 }
 
+/* Subtle zoom effect on hover */
 .carousel-item:hover img {
-    transform: scale(1.05); /* Subtle zoom effect on hover */
+    transform: scale(1.05);
 }
 
+/* Title over each item with gradient */
 .carousel-title {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)); /* Gradient background */
     color: white;
     text-align: center;
     font-size: 1.2rem;
@@ -70,8 +93,9 @@
     transition: transform 0.3s ease;
 }
 
+/* Slide-up effect on hover */
 .carousel-item:hover .carousel-title {
-    transform: translateY(0); /* Slide-up effect */
+    transform: translateY(0);
 }
 
 /* Navigation buttons */
@@ -86,6 +110,8 @@
     padding: 10px;
     cursor: pointer;
     z-index: 10;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
 }
 
 .prev-btn {

@@ -1,5 +1,6 @@
 const UserContext = require('../model/userContextModel');
 const LatestViewedProduct = require('../model/latestProductView');
+const prod = require('../model/productModel');
 const { scheduleEmail } = require('../controller/userCallToActionController');
 const { getUserInformation } = require('../controller/userController');
 const moment = require('moment');
@@ -91,8 +92,16 @@ exports.postViewedProduct = async (req, res) => {
     try {
       const userId = req.session.userId;
   
-      const viewedProducts = await LatestViewedProduct.find({ userId }).sort({ viewedAt: -1 }).limit(10);
-      return res.status(200).json(viewedProducts);
+      const viewedProducts = await LatestViewedProduct.find({ userId }).sort({ viewedAt: -1 }).limit(5);
+      console.log("Latest Products", viewedProducts);
+
+      // Populate the product details using the productId
+      const populatedLatestProducts = await Promise.all(viewedProducts.map(async (product) => {
+        const productDetails = await prod.findOne({id : product.productId}); // Assuming `prod` is your Product model
+        return { product: productDetails };
+    }));
+
+      return res.status(200).json(populatedLatestProducts);
     } catch (error) {
       return res.status(500).json({ message: 'Error retrieving viewed products', error });
     }
