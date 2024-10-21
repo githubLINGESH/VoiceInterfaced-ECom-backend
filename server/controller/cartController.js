@@ -72,3 +72,37 @@ exports.getCart = async (req, res) => {
         res.status(500).json({ message: 'Internal server error.' });
     }
 };
+
+exports.deleteProductFromCart = async (req, res) => {
+    const { productId } = req.params; // Get productId from request params
+    const userId = req.session.userId; // Retrieve userId from session
+
+    try {
+        // Find the user's cart and remove the product by its id
+        const cart = await Cart.findOne({ userId: userId });
+
+        if (!cart) {
+            return res.status(404).json({ message: 'Cart not found' });
+        }
+
+        // Find the product in the cart and remove it
+        const productIndex = cart.products.findIndex(product => product.id === productId);
+
+        if (productIndex === -1) {
+            return res.status(404).json({ message: 'Product not found in cart' });
+        }
+
+        // Remove the product
+        cart.products.splice(productIndex, 1);
+        
+        // Save the updated cart
+        await cart.save();
+        return res.status(200).json({ message: 'Product deleted successfully', cart });
+    } catch (error) {
+        console.error('Error deleting product from cart:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+
+

@@ -1,9 +1,17 @@
 import React, { FunctionComponent, useState } from "react";
-import Navbar from "components/navbar";
-import SideNavbar from "components/sidenavbar";
+import Navbar from "components/navbar/navbar";
+import SideNavbar from "components/sideNavbar/sidenavbar";
 import Userinfo from "components/userinfo";
 import VoiceInterface from "components/voiceInterface/voiceInterface";
 import axios from 'axios';
+
+interface ScrapedProductData {
+    name: string;
+    price: string;
+    description: string;
+    imageSrc: string;
+}
+
 
 const AddProducts: FunctionComponent = () => {
     const [isSidebarVisible, setIsSidebarVisible] = useState(false);
@@ -11,6 +19,7 @@ const AddProducts: FunctionComponent = () => {
     const [IsClicked, setIsClicked] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [file, setFile] = useState<File | null>(null);
+    const [productLink, setProductLink] = useState('');
 
     const toggleSidebar = () => {
         setIsSidebarVisible(!isSidebarVisible);
@@ -62,6 +71,31 @@ const AddProducts: FunctionComponent = () => {
         }
     };
 
+
+    const handleAddProduct = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/prod/Add-productslink`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ link: productLink }),
+            });
+    
+            // Check if the response is okay (status in the range 200-299)
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json(); // Convert response to JSON
+            console.log(data); // Log the response data
+        } catch (error) {
+            console.error('Error adding product:', error);
+        }
+    };
+    
+
     return (
         <div className="font-sora">
             <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
@@ -92,6 +126,21 @@ const AddProducts: FunctionComponent = () => {
                         </button>
                     </div>
                 </form>
+                </div>
+
+                <div className="flex justify-center items-center">
+                <div className="m-2">
+                    <h2>Add Product</h2>
+                    <input
+                        type="text"
+                        className="block w-full text-sm text-gray-900 bg-gray-50 rounded border border-gray-300 cursor-pointer focus:outline-none"
+                        placeholder="Enter product link"
+                        value={productLink}
+                        onChange={(e) => setProductLink(e.target.value)}
+                    />
+                    <button onClick={handleAddProduct} className="mt-2 bg-darkslategray-100 hover:bg-green-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Product</button>
+
+                   </div>
                 </div>
         </div>
     );

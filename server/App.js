@@ -9,6 +9,7 @@ const prodRoutes = require('./routes/productRoutes');
 const LLmRoutes = require('./routes/llmRoutes');
 const UserContextRoutes = require('./routes/userContextRoutes');
 const chatHistoryRoutes = require('./routes/chatHistoryRoutes');
+const AdminRoutes = require('./routes/adminRoutes');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -104,5 +105,6 @@ app.use('/prod', prodRoutes);
 app.use('/llm', LLmRoutes);
 app.use('/UContext',UserContextRoutes);
 app.use('/messageHistory', chatHistoryRoutes);
+app.use('/admin', AdminRoutes);
 
 

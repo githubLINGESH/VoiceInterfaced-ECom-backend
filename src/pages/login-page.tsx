@@ -28,6 +28,8 @@ const LoginPage: FunctionComponent = () => {
         email,
         password,
       };
+      
+      console.log(process.env.REACT_APP_BACKEND_URL);
 
       // Make a POST request to your server to register the user
       fetch(`${process.env.REACT_APP_BACKEND_URL}/user/login`, {

@@ -1,68 +1,92 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FunctionComponent, useState } from "react";
-import { useLocation } from 'react-router-dom';
-import Navbar from "../components/navbar";
+import { useLocation, useNavigate } from 'react-router-dom';
+import Navbar from "../components/navbar/navbar";
 import ProductTemplate from "../components/ProductTemplate";
-import SideNavbar from "../components/sidenavbar";
+import SideNavbar from "../components/sideNavbar/sidenavbar";
 import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
 import '../ProductTemplate.css';
-
+import axios from 'axios';
 
 type ProductView3Props = {};
 
 const ProductView: FunctionComponent<ProductView3Props> = () => {
   const location = useLocation();
-  const {product} = location.state || {};
+  const navigate = useNavigate();
+  const { product } = location.state || {};
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-  const [selectedOption,setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
   const [IsClicked, setIsClicked] = useState(false);
-    //handling profile click
-  
-    const handleProfileClick = () =>{
-        setIsClicked(!IsClicked);
-    }
 
-    const handleSelectOption = (selectedOption: string | null) => {
-      setSelectedOption(selectedOption);
-    };
 
-    const toggleSidebar = () => {
-      setIsSidebarVisible(!isSidebarVisible);
+  // Handling profile click
+  const handleProfileClick = () => {
+    setIsClicked(!IsClicked);
+  };
+
+  const handleSelectOption = (option: string | null) => {
+    setSelectedOption(option as any);
+    setIsSidebarVisible(false);
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
   };
 
   const closeSidebar = () => {
     setIsSidebarVisible(false);
   };
 
-
-  const handleVoiceOption = () =>{
+  const handleVoiceOption = () => {
     setIsVoiceOpen(!isVoiceOpen);
-  }
+  };
+
+  // Post viewed product to backend
+  useEffect(() => {
+    const postViewedProduct = async () => {
+      try {
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/UContext/viewed-product`, {
+          productId: product.id,
+          productName: product.name,
+          productPrice: product.price,
+          productImageSrc: product.imageSrc
+        },{
+          withCredentials: true,
+        });
+        console.log('Product view tracked');
+      } catch (error) {
+        console.error('Error tracking product view:', error);
+      }
+    };
+
+    if (product) {
+      postViewedProduct(); // Call function to track product view
+    }
+  }, [product]);
 
   return (
-    <div className="relative bg-white w-full h-[1024px] overflow-hidden text-left text-3xl text-darkslategray-100 font-sora">
-      <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick}/>
-        {/* form div */}
-        {isSidebarVisible && (
+    <div className="bg-white w-full text-left text-base text-darkslategray-100 font-sora">
+      <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
+      {/* form div */}
+      {isSidebarVisible && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
           onClick={closeSidebar}
         />
       )}
       <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
-      {IsClicked && <Userinfo onClose={handleProfileClick}/>}
-      <VoiceInterface isVoice={isVoiceOpen}/>
+      {IsClicked && <Userinfo onClose={handleProfileClick} />}
+      <VoiceInterface isVoice={isVoiceOpen} />
       {isVoiceOpen && <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={handleVoiceOption}>
+        className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={handleVoiceOption}>
       </div>}
 
-      <div className="m-4 py-20 flex items-center justify-center">
+      <div className="py-20 flex items-center justify-center">
         <ProductTemplate product={product} />
       </div>
     </div>
-
   );
 };
 

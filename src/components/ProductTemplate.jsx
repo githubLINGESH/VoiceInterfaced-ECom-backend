@@ -4,7 +4,7 @@
     const ProductTemplate = ({ product }) => {
 
     return (
-        <div className="grid sm:grid-rows-2 bg-whitesmoke-100 w-3/4 h-3/4">
+        <div className="m-4 grid sm:grid-rows-2 bg-whitesmoke-100 w-3/4 h-3/4 text-3xl">
             {/* Product image and pricing */}
             <div className="grid row-span-1 grid-cols-1 md:grid-cols-2">
                 {/* Product image */ }
@@ -27,7 +27,7 @@
                     <div className="py-4 h-[47px] text-black">
                         <span className="font-semibold font-sora">{product.name}</span>
                         <div className="mt-2 flex justify-center items-center bg-silver h-[46px] rounded ">
-                            Go to AMAZON
+                            Go to Payment
                         </div>
                     </div>
 
@@ -124,10 +124,10 @@
                     <h2 className="px-2 text-xl">How to buy this product?</h2>
                 </div>
                 <div className="mt-4">
-                    <p className="text-lg">- Go to Amazon product page:</p>
+                    <p className="text-lg">- Go to Payment product page:</p>
                     <ul className="list-disc list-inside mt-2">
                         <li>
-                            <span>Go to Amazon product page : use this special link to get to the product page on Amazon</span>
+                            <span>Go to Payment product page : use this special link to get to the product page on Amazon</span>
                         </li>
                         <li>
                             <span>Sometimes you may see variation in product price due to “different seller” or “offer ended”.</span>

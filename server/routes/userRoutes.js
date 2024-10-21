@@ -12,6 +12,7 @@ router.use(myMiddleware);
 
 router.post('/register', UserController.signup);
 router.post('/login', UserController.login);
+router.get('/getUserInfo',UserController.getUserById);
 
 
 module.exports = router;

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Navbar from 'components/navbar';
-import SideNavbar from 'components/sidenavbar';
+import Navbar from 'components/navbar/navbar';
+import SideNavbar from 'components/sideNavbar/sidenavbar';
 import Userinfo from 'components/userinfo';
 import VoiceInterface from 'components/voiceInterface/voiceInterface';
 import ProductCard from 'components/prodCard';
@@ -39,7 +39,7 @@ const SearchPage: React.FC = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/search?query=${searchTerm}`);
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/prod/search?query=${searchTerm}`);
                 setSearchResults(response.data.products);
             } catch (error) {
                 console.error('Error fetching search results:', error);
