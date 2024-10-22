@@ -78,6 +78,7 @@ function App() {
   }, [pathname]);
 
   return (
+    <AuthProvider>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<SignUpPage />} />
@@ -121,6 +122,7 @@ function App() {
           </PrivateRoute>
         } />
       </Routes>
+      </AuthProvider>
   );
 }
 
