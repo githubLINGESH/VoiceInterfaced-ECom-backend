@@ -72,7 +72,6 @@ app.use(bodyParser.json());
 
 // Set up Express sessions
 app.set('trust proxy', 1); // Trust the first proxy
-
 app.use(session({
     secret: 'AHnh#!*#%(!^bglyiasfM43275M',
     resave: false,
@@ -93,7 +92,7 @@ app.use(session({
 app.use(express.static(__dirname));
 
 app.get('/auth-check', (req, res) => {
-    console.log('In Auth:', req.session.userId);
+    console.log('In Auth:', req.session.userId, process.env.NODE_ENV);
     res.json({ userId: req.session.userId });
 });
 
