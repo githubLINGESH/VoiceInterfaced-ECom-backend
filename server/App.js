@@ -71,6 +71,8 @@ app.use(bodyParser.json());
 // });
 
 // Set up Express sessions
+app.set('trust proxy', 1); // Trust the first proxy
+
 app.use(session({
     secret: 'AHnh#!*#%(!^bglyiasfM43275M',
     resave: false,
@@ -82,9 +84,11 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 60 * 60, // 1 hour
         secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        httpOnly: true // Ensures the cookie is not accessible via client-side scripts
     }
 }));
+
 
 app.use(express.static(__dirname));
 
