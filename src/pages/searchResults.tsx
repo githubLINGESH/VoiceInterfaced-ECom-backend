@@ -7,7 +7,7 @@ import SideNavbar from 'components/sideNavbar/sidenavbar';
 import Userinfo from 'components/userinfo';
 import VoiceInterface from 'components/voiceInterface/voiceInterface';
 import ProductCard from 'components/prodCard';
-import {io}  from 'socket.io-client';
+import io  from 'socket.io-client';
 
 type Product = {
     id: number;
