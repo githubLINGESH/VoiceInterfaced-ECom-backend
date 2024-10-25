@@ -399,16 +399,17 @@ const Home: FunctionComponent = () => {
 
 
       {products.length === 0 ? <SkeletonLoader /> : (
-      <div id="product-section" className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onProductClick={handleProductClick}
-            onAddToCartClick={handleAddToCartClick}
-          />
-        ))}
-        </div>
+      <div id="product-section" className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
+      {products.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          onProductClick={handleProductClick}
+          onAddToCartClick={handleAddToCartClick}
+        />
+      ))}
+  </div>
+  
       )}
       
       <VoiceInterface isVoice={OpenVoice} />
