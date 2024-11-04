@@ -68,7 +68,7 @@ const ProductView: FunctionComponent<ProductView3Props> = () => {
 
   return (
     <div className="bg-white w-full text-left text-base text-darkslategray-100 font-sora">
-      <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
+      <Navbar handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
       {/* form div */}
       {isSidebarVisible && (
         <div

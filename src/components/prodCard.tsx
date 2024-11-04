@@ -59,7 +59,8 @@
             </div>
             <div className="items-center h-6">
                 <button
-                className="px-2 py-2 text-white rounded-md w-[50%] text-left text-base bg-darkslategray-100 font-sora h-8"
+                className="px-2 py-2 text-white rounded-md w-[50%] text-left text-base font-sora h-8"
+                style={{background:"black"}}
                 onClick={() => onAddToCartClick(product)}
                 >
                 Add to Cart

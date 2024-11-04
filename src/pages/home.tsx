@@ -93,6 +93,8 @@ const Home: FunctionComponent = () => {
   const [showVideoPopup, setShowVideoPopup] = useState(false);
   const [trendingProducts, setTrendingProducts] = useState<TrendingProduct[]>([]);
   const [LatestProducts, setLatestProducts] = useState<LatestProduct[]>([]);
+  const Categories = ['Headphones', 'Electronics', 'Laptops', 'Smartphones', 'Accessories', 'Footwear'];
+  
 
 
   useEffect(() => {
@@ -345,13 +347,14 @@ const Home: FunctionComponent = () => {
 
   return (
     <div className="bg-white w-full text-left text-base text-darkslategray-100 font-sora">
-      <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick}/>
+      <Navbar handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick}/>
       {isSidebarVisible && ( // if true visible
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
           onClick={closeSidebar}
         />
       )}
+
       <div className="relative">
           {/* If isVisible true only Side navbar visible*/}
           <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
@@ -397,6 +400,19 @@ const Home: FunctionComponent = () => {
         </div>
         </div>
 
+
+      {/* Responsive Categories Section */}
+      <div className="category-section mt-4 px-4 py-2 overflow-x-auto flex space-x-4 md:justify-center bg-lightgray-100">
+                {Categories.map((category, index) => (
+                    <div
+                        key={index}
+                        className="min-w-[100px] md:w-40 p-2 bg-white shadow rounded cursor-pointer hover:bg-blue-50"
+                        onClick={() => handleSelectOption(category)}
+                    >
+                        {category}
+                    </div>
+                ))}
+            </div>
 
       {products.length === 0 ? <SkeletonLoader /> : (
       <div id="product-section" className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">

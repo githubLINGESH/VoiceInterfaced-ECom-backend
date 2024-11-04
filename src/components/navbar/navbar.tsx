@@ -3,16 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Switch } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faQuestionCircle, faVolumeUp, faUser, faSearch} from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faQuestionCircle, faVolumeUp, faUser, faSearch, faNavicon} from '@fortawesome/free-solid-svg-icons';
 import './navbar.css';
 
 interface NavbarProps {
-    toggleSidebar: () => void;
+    // toggleSidebar: () => void;
     handleVoiceOption: () => void;
     handleProfileClick: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption, handleProfileClick }) => {
+const Navbar: React.FC<NavbarProps> = ({ handleVoiceOption, handleProfileClick }) => {
     const navigate = useNavigate();
 
     function handleHelpClick() {
@@ -42,12 +42,18 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, handleVoiceOption, handl
 
     return (
         <div className="navbar-container">
-            <div className="navbar-icon" onClick={toggleSidebar}>
-                <img className='menu-icon' src="/icon.png" alt="menu icon" />
-            </div>
+            {/* Sidebar Toggle Icon */}
+            {/* <div className="navbar-icon cursor-pointer text-2xl md:text-3xl" onClick={toggleSidebar}>
+                <FontAwesomeIcon icon={faNavicon} />
+            </div> */}
 
+            {/* Logo */}
             <div className="navbar-logo">
-                <img className="plugin-icon" alt="plugin icon" src="/plugin-icon--1-1-1@2x.png" />
+                <img
+                    className="plugin-icon" // Adjust icon size based on screen size
+                    alt="plugin icon"
+                    src="plugin-icon--1-1-1_2x-removebg-preview.png"
+                />
             </div>
 
             <div className="navbar-search">

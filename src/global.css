@@ -154,9 +154,29 @@ html, body {
   overflow: scroll; /* Ensure page is scrollable */
   scrollbar-width: none; /* For Firefox */
   -ms-overflow-style: none; /* For Internet Explorer and Edge */
-  background-color: darkslategray;
+  background: linear-gradient(90deg, #020024 0%, #493628 35%, #AB886D 100%);
+  animation: gradientShift 15s ease infinite;
 }
 
 html::-webkit-scrollbar, body::-webkit-scrollbar {
   display: none; /* For Chrome, Safari, and Opera */
+}
+
+
+/* home component */
+
+.category-section {
+    display: flex;
+    overflow-x: auto;
+    padding: 1rem;
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+    background-color: #AB886D;
+    border-radius: 5rem;
+}
+.category-item {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    padding: 0.5rem;
+    text-align: center;
 }

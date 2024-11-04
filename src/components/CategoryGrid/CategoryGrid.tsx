@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './CategoryGrid.css'; // Use a separate CSS file for styles
+import React, { useState, useEffect, useRef } from 'react';
+import './CategoryGrid.css';
 
 interface Category {
     name: string;
@@ -14,35 +14,62 @@ interface CategoryCarouselProps {
 
 const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [translateX, setTranslateX] = useState(0);
+    const carouselRef = useRef<HTMLDivElement | null>(null);
 
-    // Handle next slide
     const handleNext = () => {
-        setCurrentIndex((prevIndex) => 
-            (prevIndex + 1) % categories.length
-        );
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % categories.length);
     };
 
-    // Handle previous slide
     const handlePrev = () => {
         setCurrentIndex((prevIndex) =>
             (prevIndex - 1 + categories.length) % categories.length
         );
     };
 
-    // Auto-slide after 5 seconds
     useEffect(() => {
-        const interval = setInterval(handleNext, 8000); // 8 seconds for smoother experience
+        const interval = setInterval(handleNext, 8000);
         return () => clearInterval(interval);
     }, []);
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        setIsDragging(true);
+        setStartX(e.clientX - translateX);
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging) return;
+        setTranslateX(e.clientX - startX);
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+        if (translateX < -100) {
+            handleNext();
+        } else if (translateX > 100) {
+            handlePrev();
+        }
+        setTranslateX(0);
+    };
 
     return (
         <div className="category-carousel-wrapper">
             <h2 className="category-carousel-title">Categories</h2>
-            <div className="category-carousel">
+            <div
+                className="category-carousel"
+                ref={carouselRef}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={() => setIsDragging(false)}
+            >
                 <div
                     className="carousel-slider"
                     style={{
-                        transform: `translateX(-${currentIndex * (100 / 3)}%)`, // Adjust for 3 items
+                        transform: `translateX(calc(-${currentIndex * (100 / 3)}% + ${translateX}px))`,
+                        transition: isDragging ? 'none' : 'transform 1.5s ease-in-out',
                     }}
                 >
                     {categories.map((category, index) => (
