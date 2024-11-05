@@ -31,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {/* Centered image container */}
         <div className="absolute top-0 left-0 w-full h-[60%] bg-white shadow-[1px_1px_2px_rgba(0,_0,_0,_0.25)_inset] rounded-md flex items-center justify-center overflow-hidden">
           <img
-            className="object-contain w-[80%] h-[80%] cursor-pointer"
+            className="object-contain w-[70%] h-[70%] cursor-pointer z-10"
             src={product.imageSrc}
             alt={product.name}
             onClick={() => onProductClick(product)}
@@ -39,7 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         <div className="absolute inset-0 flex flex-col justify-between p-4">
-          <div>
+          <div className="z-[99999]">
             <div className="text-red">{product.discount}% off</div>
             <div className="text-black font-bold">₹{product.d_price}</div>
             <div className="text-gray-500 line-through">₹{product.price}</div>
