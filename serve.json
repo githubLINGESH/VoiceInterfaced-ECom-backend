@@ -1,0 +1,9 @@
+{
+    "routes": {
+      "/**": {
+        "dest": "/index.html",
+        "status": 200
+      }
+    }
+  }
+  

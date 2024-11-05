@@ -13,13 +13,13 @@ export default function Navbarr() {
   }
 
   return (
-    <div className="relative w-full h-auto">
+    <div className="relative w-full">
       {/* Main Navbar */}
-      <div className="bg-darkslategray-100 shadow-lg flex justify-between items-center px-4 md:px-12 py-4">
+      <div className="bg-[#AB886D] shadow-lg flex justify-between items-center px-4 md:px-12 py-4">
         {/* Logo */}
         <img
           className="h-12 w-auto cursor-pointer"
-          src="/plugin-icon--1-1-1@2x.png"
+          src="/plugin-icon--1-1-1_2x-removebg-preview.png"
           alt="Logo"
         />
 
@@ -27,10 +27,11 @@ export default function Navbarr() {
         <div className="flex items-center w-full md:w-1/3 relative">
           <input
             type="text"
-            className="w-full p-2 rounded-l-lg border-none outline-none"
+            className="w-full p-2 rounded-l-lg outline-none"
             placeholder="Search items"
+            style={{ backgroundColor: '#D8C3A5' }}
           />
-          <button className="bg-whitesmoke-100 p-2 rounded-r-lg">
+          <button className="bg-white p-2 rounded-r-lg">
             <img
               className="h-6 w-6"
               src="/vector1.svg"
@@ -40,16 +41,16 @@ export default function Navbarr() {
         </div>
 
         {/* Cart and Help Links */}
-        <div className="flex space-x-4">
+        <div className="flex space-x-6">
           <div
-            className="text-white cursor-pointer"
+            className="text-white font-medium cursor-pointer hover:text-gray-200 transition duration-200"
             onClick={handleCartClick}
           >
-            CART
+            Cart
           </div>
 
           <div
-            className="text-white cursor-pointer"
+            className="text-white font-medium cursor-pointer hover:text-gray-200 transition duration-200"
             onClick={handleHelpClick}
           >
             Help
@@ -63,16 +64,16 @@ export default function Navbarr() {
             src="/vector3.svg"
             alt="User"
           />
-          <div className="text-white cursor-pointer">User</div>
+          <div className="text-white cursor-pointer hover:text-gray-200 transition duration-200">User</div>
         </div>
       </div>
 
       {/* Secondary Navbar (Terms, About, etc.) */}
-      <div className="bg-silver py-3 flex justify-around text-center text-black text-sm">
-        <div className="cursor-pointer">About</div>
-        <div className="cursor-pointer">Terms of Use</div>
-        <div className="cursor-pointer">Disclaimer</div>
-        <div className="cursor-pointer">Affiliate Disclosure</div>
+      <div className="bg-gray-300 py-3 flex justify-around text-center text-black text-sm">
+        <div className="cursor-pointer hover:text-[#AB886D] transition duration-200">About</div>
+        <div className="cursor-pointer hover:text-[#AB886D] transition duration-200">Terms of Use</div>
+        <div className="cursor-pointer hover:text-[#AB886D] transition duration-200">Disclaimer</div>
+        <div className="cursor-pointer hover:text-[#AB886D] transition duration-200">Affiliate Disclosure</div>
       </div>
     </div>
   );

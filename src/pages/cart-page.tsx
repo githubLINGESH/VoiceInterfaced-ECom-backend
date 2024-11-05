@@ -84,7 +84,7 @@ const Cart: FunctionComponent<Cart2Props> = () => {
 
   return (
     <div className="bg-white w-full h-[1024px] text-left text-base text-darkslategray-100 font-sora">
-      <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
+      <Navbar handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
       {isSidebarVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={closeSidebar} />
       )}

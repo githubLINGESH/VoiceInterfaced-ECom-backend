@@ -7,7 +7,7 @@ import SideNavbar from 'components/sideNavbar/sidenavbar';
 import Userinfo from 'components/userinfo';
 import VoiceInterface from 'components/voiceInterface/voiceInterface';
 import ProductCard from 'components/prodCard';
-import {io}  from 'socket.io-client';
+import io  from 'socket.io-client';
 
 type Product = {
     id: number;
@@ -119,7 +119,7 @@ const SearchPage: React.FC = () => {
 
     return (
         <div className="font-sora">
-            <Navbar toggleSidebar={toggleSidebar} handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
+            <Navbar handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
             {isSidebarVisible && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 z-40"
