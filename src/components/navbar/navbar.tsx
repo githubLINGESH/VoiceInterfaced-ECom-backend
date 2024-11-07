@@ -1,31 +1,22 @@
-import React from 'react';
+// navbar.tsx
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { Switch } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faQuestionCircle, faVolumeUp, faUser, faSearch, faNavicon} from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faQuestionCircle, faVolumeUp, faUser, faSearch, faNavicon } from '@fortawesome/free-solid-svg-icons';
+import PluginIcon from "assests/plugin-icon--1-1-1_2x-removebg-preview.png";
 import './navbar.css';
 
 interface NavbarProps {
-    // toggleSidebar: () => void;
     handleVoiceOption: () => void;
     handleProfileClick: () => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ handleVoiceOption, handleProfileClick }) => {
     const navigate = useNavigate();
-
-    function handleHelpClick() {
-        navigate('/about');
-    }
-
-    function handleCartClick() {
-        navigate('/cart');
-    }
-
     const [searchTerm, setSearchTerm] = useState('');
-
     const [checked, setChecked] = useState(false);
+
     const handleToggle = () => {
         setChecked(!checked);
         checked ? navigate('/home') : navigate('/voice-com');
@@ -42,20 +33,16 @@ const Navbar: React.FC<NavbarProps> = ({ handleVoiceOption, handleProfileClick }
 
     return (
         <div className="navbar-container">
-            {/* Sidebar Toggle Icon */}
-            {/* <div className="navbar-icon cursor-pointer text-2xl md:text-3xl" onClick={toggleSidebar}>
-                <FontAwesomeIcon icon={faNavicon} />
-            </div> */}
-
             {/* Logo */}
             <div className="navbar-logo">
                 <img
-                    className="plugin-icon" // Adjust icon size based on screen size
+                    className="plugin-icon"
                     alt="plugin icon"
-                    src="plugin-icon--1-1-1_2x-removebg-preview.png"
+                    src={PluginIcon} // Use the imported image
                 />
             </div>
 
+            {/* Search Form */}
             <div className="navbar-search">
                 <form onSubmit={handleSearchSubmit} className="search-form">
                     <input
@@ -71,26 +58,22 @@ const Navbar: React.FC<NavbarProps> = ({ handleVoiceOption, handleProfileClick }
                 </form>
             </div>
 
-            <div className="navbar-item" onClick={handleCartClick}>
+            {/* Other Navbar Icons */}
+            <div className="navbar-item" onClick={() => navigate('/cart')}>
                 <FontAwesomeIcon icon={faCartShopping} className="navbar-icon-item" />
             </div>
-
-            <div className="navbar-item" onClick={handleHelpClick}>
+            <div className="navbar-item" onClick={() => navigate('/about')}>
                 <FontAwesomeIcon icon={faQuestionCircle} className="navbar-icon-item" />
             </div>
-
             <div className="navbar-item" onClick={handleVoiceOption}>
                 <FontAwesomeIcon icon={faVolumeUp} className="navbar-icon-item" />
             </div>
-
             <div className="navbar-profile">
                 <div className="profile-md" onClick={handleProfileClick}>
                     <h2 className="profile-name">User</h2>
                     <FontAwesomeIcon icon={faUser} className="profile-icon" />
                 </div>
-
                 <Switch checked={checked} onChange={handleToggle} />
-
                 <div className="profile-sm" onClick={handleProfileClick}>
                     <FontAwesomeIcon icon={faUser} className="profile-icon" />
                 </div>

@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
 import { FunctionComponent, useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import Navbar from "../components/navbar/navbar";
+import Navbar from "components/navbar/navbar";
 import ProductTemplate from "../components/ProductTemplate";
-import SideNavbar from "../components/sideNavbar/sidenavbar";
 import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
-import '../ProductTemplate.css';
 import axios from 'axios';
 
 type ProductView3Props = {};
@@ -29,10 +27,6 @@ const ProductView: FunctionComponent<ProductView3Props> = () => {
   const handleSelectOption = (option: string | null) => {
     setSelectedOption(option as any);
     setIsSidebarVisible(false);
-  };
-
-  const toggleSidebar = () => {
-    setIsSidebarVisible(!isSidebarVisible);
   };
 
   const closeSidebar = () => {
@@ -69,14 +63,6 @@ const ProductView: FunctionComponent<ProductView3Props> = () => {
   return (
     <div className="bg-white w-full text-left text-base text-darkslategray-100 font-sora">
       <Navbar handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick} />
-      {/* form div */}
-      {isSidebarVisible && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={closeSidebar}
-        />
-      )}
-      <SideNavbar onSelect={handleSelectOption} isVisible={isSidebarVisible} />
       {IsClicked && <Userinfo onClose={handleProfileClick} />}
       <VoiceInterface isVoice={isVoiceOpen} />
       {isVoiceOpen && <div
