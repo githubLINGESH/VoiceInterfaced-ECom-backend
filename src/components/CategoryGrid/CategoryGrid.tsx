@@ -21,12 +21,14 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
 
     const handleNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % categories.length);
+        setTranslateX(0); // Reset the translateX value
     };
-
+    
     const handlePrev = () => {
         setCurrentIndex((prevIndex) =>
             (prevIndex - 1 + categories.length) % categories.length
         );
+        setTranslateX(0); // Reset the translateX value
     };
 
     useEffect(() => {
@@ -46,12 +48,20 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
 
     const handleMouseUp = () => {
         setIsDragging(false);
-        if (translateX < -100) {
+    
+        // Calculate the distance threshold for swapping
+        const swapThreshold = 100;
+    
+        if (translateX < -swapThreshold) {
+            // Swap to the next item
             handleNext();
-        } else if (translateX > 100) {
+        } else if (translateX > swapThreshold) {
+            // Swap to the previous item
             handlePrev();
+        } else {
+            // Reset the position
+            setTranslateX(0);
         }
-        setTranslateX(0);
     };
 
     return (
