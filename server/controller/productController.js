@@ -23,6 +23,18 @@
           res.status(500).send('Server error');
         }
       };
+    
+      exports.getProduct = async (req, res) => {
+        try {
+          const { id } = req.params;
+
+          const products = await prod.findOne({id:id});
+          return res.json(products);
+        } catch (error) {
+          console.error('Error fetching products:', error);
+          res.status(500).send('Server error');
+        }
+      };
 
     exports.addProductsFromFile = async (req, res) => {
         try {

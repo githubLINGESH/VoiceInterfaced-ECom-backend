@@ -6,6 +6,7 @@ const upload = require('../middleware/fileUpload');
 
 
 router.get('/products',ProdController.getProducts);
+router.get('/product/:id', ProdController.getProduct);
 router.post('/Add-products', upload.single('file'), ProdController.addProductsFromFile);
 router.post('/Add-productslink', ProdController.addProductsFromLink);
 router.get('/search',ProdController.searchProducts);

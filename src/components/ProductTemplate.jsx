@@ -12,7 +12,8 @@
                     <div className="m-4 flex bg-white items-center justify-center">
                         {product.imageSrc ? (
                         <img
-                            className="h-[321.48px] lg:w-[289.67px] md:w-[210px] sm:w-[160px] object-cover"
+                            className="h-[321.48px] lg:w-[289.67px] md:w-[210px] sm:w-[160px] object-contain"
+                            style={{backgroundRepeat:"no-repeat"}}
                             alt=""
                             src={product.imageSrc}
                         />
