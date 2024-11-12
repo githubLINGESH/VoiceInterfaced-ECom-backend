@@ -1,14 +1,30 @@
 import React from 'react';
+import { useState } from 'react';
 import { FunctionComponent } from "react";
-import Navbarr from "../components/navbarr";
+import Navbar from 'components/navbar/navbar';
 import Footer from "../components/Footer";
 
 const AboutPage: FunctionComponent = () => {
+  const [OpenVoice, SetVoiceInterfaceOpen] = useState(false);
+  const [IsClicked, setIsClicked] = useState(false);
+
+
+    //voice interface handling
+    const handleVoiceOption = () => {
+      SetVoiceInterfaceOpen(!OpenVoice);
+    }
+
+      //handling profile click
+
+  const handleProfileClick = () =>{
+    setIsClicked(!IsClicked);
+  };
+
   return (
     <div className="text-left font-inter">
       <div className="relative bg-white w-full min-h-screen overflow-hidden text-left font-inter">
-        <Navbarr />
-        <div className="relative max-w-screen-lg mx-auto p-6 md:p-10">
+      <Navbar handleVoiceOption={handleVoiceOption} handleProfileClick={handleProfileClick}/>
+        <div className="relative m-20 max-w-screen-lg mx-auto p-6 md:p-10">
           <div className="bg-[#AB886D] w-full h-auto p-8 rounded-lg shadow-lg">
             <h1 className="text-white text-3xl md:text-4xl font-bold mb-6">About</h1>
             <p className="text-white text-base md:text-lg font-light leading-relaxed">

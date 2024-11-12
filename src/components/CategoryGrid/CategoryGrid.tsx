@@ -10,9 +10,10 @@ interface Category {
 
 interface CategoryCarouselProps {
     categories: Category[];
+    onCategorySelect: (categoryName: string) => void;
 }
 
-const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
+const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories, onCategorySelect }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
@@ -21,12 +22,14 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
 
     const handleNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % categories.length);
+        setTranslateX(0); // Reset the translateX value
     };
-
+    
     const handlePrev = () => {
         setCurrentIndex((prevIndex) =>
             (prevIndex - 1 + categories.length) % categories.length
         );
+        setTranslateX(0); // Reset the translateX value
     };
 
     useEffect(() => {
@@ -46,12 +49,20 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
 
     const handleMouseUp = () => {
         setIsDragging(false);
-        if (translateX < -100) {
+    
+        // Calculate the distance threshold for swapping
+        const swapThreshold = 100;
+    
+        if (translateX < -swapThreshold) {
+            // Swap to the next item
             handleNext();
-        } else if (translateX > 100) {
+        } else if (translateX > swapThreshold) {
+            // Swap to the previous item
             handlePrev();
+        } else {
+            // Reset the position
+            setTranslateX(0);
         }
-        setTranslateX(0);
     };
 
     return (
@@ -74,9 +85,9 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
                 >
                     {categories.map((category, index) => (
                         <a
-                            href={category.link}
                             key={index}
                             className={`carousel-item ${category.orientation}`}
+                            onClick={() => onCategorySelect(category.name)} // Call onCategorySelect on click
                         >
                             <img src={category.imageUrl} alt={category.name} />
                             <div className="carousel-title">{category.name}</div>

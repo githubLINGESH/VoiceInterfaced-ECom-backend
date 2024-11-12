@@ -39,7 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         <div className="absolute inset-0 flex flex-col justify-between p-4">
-          <div className="z-[99999]">
+          <div className="z-10">
             <div className="text-red">{product.discount}% off</div>
             <div className="text-black font-bold">₹{product.d_price}</div>
             <div className="text-gray-500 line-through">₹{product.price}</div>
