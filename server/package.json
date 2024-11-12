@@ -8,7 +8,7 @@
     "server": "node App.js",
     "client": "cd ../ && cd src && npm start"
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "https://dealon.onrender.com",
   "keywords": [],
   "author": "",
   "license": "ISC",

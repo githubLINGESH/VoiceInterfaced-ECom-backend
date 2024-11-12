@@ -20,7 +20,7 @@ const server = http.createServer(app);
 
     const io = socketIo(server, {
         cors: {
-        origin: "http://localhost:3000",
+        origin: "https://dealon.onrender.com",
         methods: ["GET", "POST"]
         }
     });
@@ -55,7 +55,7 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Enable CORS for all routes
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://dealon.onrender.com',
     credentials: true
 }));
 
@@ -71,6 +71,7 @@ app.use(bodyParser.json());
 // });
 
 // Set up Express sessions
+app.set('trust proxy', 1); // Trust the first proxy
 app.use(session({
     secret: 'AHnh#!*#%(!^bglyiasfM43275M',
     resave: false,
@@ -82,14 +83,16 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 60 * 60, // 1 hour
         secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        httpOnly: true // Ensures the cookie is not accessible via client-side scripts
     }
 }));
+
 
 app.use(express.static(__dirname));
 
 app.get('/auth-check', (req, res) => {
-    console.log('In Auth:', req.session.userId);
+    console.log('In Auth:', req.session.userId, process.env.NODE_ENV);
     res.json({ userId: req.session.userId });
 });
 
