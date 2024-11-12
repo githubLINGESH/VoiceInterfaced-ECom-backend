@@ -10,9 +10,10 @@ interface Category {
 
 interface CategoryCarouselProps {
     categories: Category[];
+    onCategorySelect: (categoryName: string) => void;
 }
 
-const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
+const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories, onCategorySelect }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
@@ -84,9 +85,9 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
                 >
                     {categories.map((category, index) => (
                         <a
-                            href={category.link}
                             key={index}
                             className={`carousel-item ${category.orientation}`}
+                            onClick={() => onCategorySelect(category.name)} // Call onCategorySelect on click
                         >
                             <img src={category.imageUrl} alt={category.name} />
                             <div className="carousel-title">{category.name}</div>

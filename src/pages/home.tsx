@@ -6,7 +6,6 @@ import ProductCard from "../components/prodCard";
 import ProdTem from "../components/productTem";
 import CategoryCarousel from "components/CategoryGrid/CategoryGrid";
 import SideNavbar from "../components/sideNavbar/sidenavbar";
-import Slider from "../components/slider/slider";
 import VoiceInterface from "../components/voiceInterface/voiceInterface";
 import Userinfo from "components/userinfo";
 import Products from "../productData";
@@ -94,7 +93,6 @@ const Home: FunctionComponent = () => {
   const [trendingProducts, setTrendingProducts] = useState<TrendingProduct[]>([]);
   const [LatestProducts, setLatestProducts] = useState<LatestProduct[]>([]);
   const Categories = ['Headphones', 'Electronics', 'Laptops', 'Smartphones', 'Accessories', 'Footwear'];
-  
 
 
   useEffect(() => {
@@ -343,6 +341,10 @@ const Home: FunctionComponent = () => {
     </div>
   );
 
+  const handleCategorySelect = (categoryName: string) => {
+    setSelectedOption(categoryName); // Update selected category
+  };
+
   //passing the carted added
 
   return (
@@ -378,7 +380,7 @@ const Home: FunctionComponent = () => {
         </div>
         </div>
           <div className="py-2 mt-2">
-            <CategoryCarousel categories={categories} />
+            <CategoryCarousel categories={categories} onCategorySelect={handleCategorySelect} />
           </div>
       </div>
 
