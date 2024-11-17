@@ -28,8 +28,6 @@ const LoginPage: FunctionComponent = () => {
         email,
         password,
       };
-      
-      console.log(process.env.REACT_APP_BACKEND_URL);
 
       // Make a POST request to your server to register the user
       fetch(`${process.env.REACT_APP_BACKEND_URL}/user/login`, {
@@ -43,8 +41,10 @@ const LoginPage: FunctionComponent = () => {
         .then((response) => {
           if (response.ok) {
             // Registration successful, handle accordingly
-            alert("Login successful!");
-            navigate('/home');
+            response.json().then((data) => {
+              console.log(data.userId);console.log("Login button clicked");
+              navigate('/home', { state: { userId: data.userId } }); // Pass userId in state
+            });
           } else {
             // Registration failed, handle accordingly
             alert("Login failed. Please try again.");

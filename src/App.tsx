@@ -6,10 +6,10 @@ import {
 } from "react-router-dom";
 import SignUpPage from "./pages/sign-up-page";
 import LoginPage from "./pages/login-page";
-import Desktop4 from "./pages/About-page";
-import Desktop3 from "./pages/productView-page";
-import Desktop2 from "./pages/cart-page";
-import Desktop1 from "./pages/home";
+import HomePage from "./pages/home";
+import AboutPage from "pages/About-page";
+import ProductView from "pages/productView-page";
+import Cart from "pages/cart-page";
 import AddProducts from "pages/AddProducts";
 import VoicePage from "pages/voiceInterface/voiceinterface";
 import SearchPage from "pages/searchResults";
@@ -83,22 +83,22 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<SignUpPage />} />
         <Route path="/login-page" element={<LoginPage />} />
-        <Route path="/about" element={<Desktop4 />} />
+        <Route path="/about" element={<AboutPage />} />
 
         {/* Private Routes (Protected) */}
         <Route path="/product/:productId" element={
           <PrivateRoute>
-            <Desktop3 />
+            <ProductView />
           </PrivateRoute>
         } />
         <Route path="/cart" element={
           <PrivateRoute>
-            <Desktop2 />
+            <Cart />
           </PrivateRoute>
         } />
         <Route path="/home" element={
           <PrivateRoute>
-            <Desktop1 />
+            <HomePage />
           </PrivateRoute>
         } />
         <Route path="/addProducts" element={
