@@ -1,5 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import ProductTemplate from "../components/ProductTemplate";
 import Navbar from "../components/navbar/navbar";
 import ProductCard from "../components/prodCard";
@@ -82,9 +83,10 @@ const categories : Category[] = [
 
 const Home: FunctionComponent = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // To access the passed state
   const [products, setProducts] = useState<Product[]>([]);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-  const [userId, setUserId] = useState<any>();
+  const [userId, setUserId] = useState<any>(location.state?.userId || null); // Get userId from state or set null
   const [OpenVoice, SetVoiceInterfaceOpen] = useState(false);
   const [IsClicked, setIsClicked] = useState(false);
   const [SelectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -96,33 +98,36 @@ const Home: FunctionComponent = () => {
 
 
   useEffect(() => {
-    const getCred = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth-check`, {
-          method: "GET",
-          credentials: 'include',
-        });
-  
-        if (response.ok) {
-          const { userId: UserIdd } = await response.json(); // Destructure userId from the response
-  
-          setUserId(UserIdd);
-          console.log("Home page", UserIdd);
-  
-          // Check if userId is null, undefined, or empty (better validation)
-          if (!UserIdd) {
-            navigate('/login-page'); // Redirect to login page if userId is invalid
+    console.log("userId in client side", userId);
+    if (!userId) {
+      // If userId is not available, fetch it from the backend
+      const getCred = async () => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth-check`, {
+            method: "GET",
+            credentials: 'include',
+          });
+
+          if (response.ok) {
+            const { userId: fetchedUserId } = await response.json();
+            setUserId(fetchedUserId);
+            console.log("Home page", fetchedUserId);
+
+            // Redirect to login if fetched userId is invalid
+            if (!fetchedUserId) {
+              navigate('/login-page');
+            }
+          } else {
+            console.log("Some error", response);
           }
-        } else {
-          console.log("Some error", response);
+        } catch (error) {
+          console.error("Error fetching credentials:", error);
         }
-      } catch (error) {
-        console.error("Error fetching credentials:", error);
-      }
-    };
-  
-    getCred();
-  }, [navigate]); // Make sure 'navigate' is included in the dependency array
+      };
+
+      getCred();
+    }
+  }, [navigate, userId]); // Dependency array includes userId
   
 
   // Handle inactivity (no activity for 8 seconds)

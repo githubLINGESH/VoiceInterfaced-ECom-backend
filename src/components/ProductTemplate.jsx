@@ -40,11 +40,11 @@ const ProductTemplate = ({ product }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#020024] via-[#493628] to-[#AB886D] p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-7xl mx-auto bg-black/20 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl"
+        className="max-w-7xl mx-auto bg-black/20 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl  bg-gradient-to-br from-[#020024] via-[#493628] to-[#AB886D]"
       >
         <div className="grid lg:grid-cols-2 gap-0">
           {/* Product Image Section */}

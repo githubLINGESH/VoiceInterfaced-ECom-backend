@@ -80,7 +80,7 @@ exports.login = async (req, res) => {
             });
 
         // res.status(200).json({ token, userId: user._id, email: user.email });
-        res.status(200).json("Success");
+        res.status(200).json({userId: req.session.userId});
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error.' });
