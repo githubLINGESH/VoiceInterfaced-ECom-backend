@@ -122,7 +122,7 @@ function App() {
           </PrivateRoute>
         } />
       </Routes>
-    </AuthProvider>
+      </AuthProvider>
   );
 }
 

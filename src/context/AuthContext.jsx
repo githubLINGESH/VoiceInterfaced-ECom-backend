@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AuthContext = createContext();
+const AuthContext = createContext(null); // Default to null to avoid 'undefined' errors
 
 export const useAuth = () => useContext(AuthContext);
 
